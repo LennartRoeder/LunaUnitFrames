@@ -1,20 +1,21 @@
-LunaUF = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceConsole-2.0", "AceDB-2.0", "AceHook-2.1", "FuBarPlugin-2.0", "AceDebug-2.0")
-LunaUF:RegisterDB("LunaDB")
+LunaUF2 = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceConsole-2.0", "AceDB-2.0", "AceHook-2.1", "FuBarPlugin-2.0", "AceDebug-2.0")
+LunaUF2:RegisterDB("LunaDB2")
 
 -- Assets ----------------------------------------------------------------------------------
-LunaUF.Version = 2325
-LunaUF.BS = AceLibrary("Babble-Spell-2.2")
-LunaUF.Banzai = AceLibrary("Banzai-1.0")
-LunaUF.HealComm = AceLibrary("HealComm-1.0")
-LunaUF.DruidManaLib = AceLibrary("DruidManaLib-1.0")
-LunaUF.CL = AceLibrary("CastLib-1.0")
-LunaUF.roster = AceLibrary("RosterLib-2.0")
-LunaUF.unitList = {"player", "pet", "pettarget", "target", "targettarget", "targettargettarget", "party", "partytarget", "partypet", "raid", "focus"}
-LunaUF.ScanTip = CreateFrame("GameTooltip", "LunaScanTip", nil, "GameTooltipTemplate")
-LunaUF.ScanTip:SetOwner(WorldFrame, "ANCHOR_NONE")
-LunaUF.modules = {}
-_, LunaUF.playerRace = UnitRace("player")
-LunaUF.AllianceCheck = {
+LunaUF2.Version = 2325
+LunaUF2.BS = AceLibrary("Babble-Spell-2.2")
+LunaUF2.Banzai = AceLibrary("Banzai-1.0")
+LunaUF2.HealComm = AceLibrary("HealComm-1.0")
+LunaUF2.DruidManaLib = AceLibrary("DruidManaLib-1.0")
+LunaUF2.CL = AceLibrary("CastLib-1.0")
+LunaUF2.roster = AceLibrary("RosterLib-2.0")
+LunaUF2.unitList = {"player", "pet", "pettarget", "target", "targettarget", "targettargettarget", "party", "partytarget", "partypet", "raid", "focus"}
+LunaUF2.ScanTip = CreateFrame("GameTooltip", "LunaScanTip", nil, "GameTooltipTemplate")
+LunaUF2.ScanTip:SetOwner(WorldFrame, "ANCHOR_NONE")
+LunaUF2.modules = {}
+_, LunaUF2.playerRace = UnitRace("player")
+LunaUF2.AllianceCheck = {
+
 	["Dwarf"] = true,
 	["Human"] = true,
 	["Gnome"] = true,
@@ -177,7 +178,7 @@ local function BarRefresh(self)
 	end
 end
 
-function LunaUF:CreateBar(name, parent)
+function LunaUF2:CreateBar(name, parent)
 	local frame = CreateFrame("Frame", name, parent)
 	frame.texture = frame:CreateTexture()
 	
@@ -205,22 +206,22 @@ function LunaUF:CreateBar(name, parent)
 	return frame
 end
 
-function LunaUF:deepcopy(orig)
+function LunaUF2:deepcopy(orig)
     local orig_type = type(orig)
     local copy
     if orig_type == 'table' then
         copy = {}
         for orig_key, orig_value in next, orig, nil do
-            copy[LunaUF:deepcopy(orig_key)] = LunaUF:deepcopy(orig_value)
+            copy[LunaUF2:deepcopy(orig_key)] = LunaUF2:deepcopy(orig_value)
         end
-        setmetatable(copy, LunaUF:deepcopy(getmetatable(orig)))
+        setmetatable(copy, LunaUF2:deepcopy(getmetatable(orig)))
     else -- number, string, boolean, etc
         copy = orig
     end
     return copy
 end
 
-function LunaUF:CastSpellByName_IgnoreSelfCast(spell, onPlayer)
+function LunaUF2:CastSpellByName_IgnoreSelfCast(spell, onPlayer)
 	if type(spell) == "function" then
 		spell()
 		return
@@ -232,14 +233,14 @@ function LunaUF:CastSpellByName_IgnoreSelfCast(spell, onPlayer)
 	SetCVar("AutoSelfCast", sc)
 end
 
-function LunaUF:isDualSpell(spell)
+function LunaUF2:isDualSpell(spell)
 	return strfind(spell,self.BS["Holy Shock"]) or strfind(spell, self.BS["Mind Vision"]) or strfind(spell, self.BS["Dispel Magic"]) or strfind(spell, self.BS["Devour Magic"])
 end
 
-function LunaUF:Mouseover(action)
+function LunaUF2:Mouseover(action)
 	local func = loadstring(action or "")
 	SpellStopTargeting()
-	local unit = (LunaUF.db.profile.mouseover and UnitExists("mouseover") and "mouseover") or (GetMouseFocus() and GetMouseFocus().unit)
+	local unit = (LunaUF2.db.profile.mouseover and UnitExists("mouseover") and "mouseover") or (GetMouseFocus() and GetMouseFocus().unit)
 	local rosterUnit = unit and self.roster:GetUnitIDFromUnit(unit)
 	unit = rosterUnit or unit
 	if unit then
@@ -299,7 +300,7 @@ end
 
 SLASH_LUFMO1, SLASH_LUFMO2 = "/lunamo", "/lunamouseover"
 function SlashCmdList.LUFMO(msg, editbox)
-	LunaUF:Mouseover(msg)
+	LunaUF2:Mouseover(msg)
 end
 
 function lufmo(msg)
@@ -363,28 +364,28 @@ end
 --------------------------------------------------------------------------------------------
 
 -- Localization Stuff ----------------------------------------------------------------------
-LunaUF.L = AceLibrary("AceLocale-2.2"):new("LunaUnitFrames")
-local L = LunaUF.L
+LunaUF2.L = AceLibrary("AceLocale-2.2"):new("LunaUnitFrames2")
+local L = LunaUF2.L
 --------------------------------------------------------------------------------------------
 
 -- FUBAR Stuff -----------------------------------------------------------------------------
-LunaUF.name = "LunaUnitFrames"
-LunaUF.hasNoColor = true
-LunaUF.hasIcon = "Interface\\AddOns\\LunaUnitFrames\\media\\textures\\icon"
-LunaUF.defaultMinimapPosition = 180
-LunaUF.cannotDetachTooltip = true
-LunaUF.hideWithoutStandby = true
+LunaUF2.name = "LunaUnitFrames2"
+LunaUF2.hasNoColor = true
+LunaUF2.hasIcon = "Interface\\AddOns\\LunaUnitFrames2\\media\\textures\\icon"
+LunaUF2.defaultMinimapPosition = 180
+LunaUF2.cannotDetachTooltip = true
+LunaUF2.hideWithoutStandby = true
 
-function LunaUF:OnClick()
+function LunaUF2:OnClick()
 	if IsControlKeyDown() then
-		if LunaUF.db.profile.locked then
-			LunaUF:SystemMessage(L["Entering config mode."])
-			LunaUF.db.profile.locked = false
+		if LunaUF2.db.profile.locked then
+			LunaUF2:SystemMessage(L["Entering config mode."])
+			LunaUF2.db.profile.locked = false
 		else
-			LunaUF:SystemMessage(L["Exiting config mode."])
-			LunaUF.db.profile.locked = true
+			LunaUF2:SystemMessage(L["Exiting config mode."])
+			LunaUF2.db.profile.locked = true
 		end
-		LunaUF:LoadUnits()
+		LunaUF2:LoadUnits()
 	else
 		if LunaOptionsFrame:IsShown() then
 			LunaOptionsFrame:Hide()
@@ -396,14 +397,14 @@ end
 --------------------------------------------------------------------------------------------
 
 --Constant Values --------------------------------------------------------------------------
-LunaUF.constants = {
+LunaUF2.constants = {
 	backdrop = {
 		bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
 		tile = true,
 		tileSize = 16,
 		insets = {left = -1.5, right = -1.5, top = -1.5, bottom = -1.5},
 	},
-	icon = "Interface\\AddOns\\LunaUnitFrames\\media\\textures\\icon",
+	icon = "Interface\\AddOns\\LunaUnitFrames2\\media\\textures\\icon",
 	AnchorPoint = {
 	["UP"] = "BOTTOM",
 	["DOWN"] = "TOP",
@@ -413,7 +414,7 @@ LunaUF.constants = {
 	RaidClassMapping = {
 		[1] = "WARRIOR",
 		[2] = "DRUID",
-		[3] = LunaUF.AllianceCheck[LunaUF.playerRace] and "PALADIN" or "SHAMAN",
+		[3] = LunaUF2.AllianceCheck[LunaUF2.playerRace] and "PALADIN" or "SHAMAN",
 		[4] = "WARLOCK",
 		[5] = "PRIEST",
 		[6] = "MAGE",
@@ -499,10 +500,10 @@ LunaUF.constants = {
 --------------------------------------------------------------------------------------------
 
 --Upon Loading
-function LunaUF:OnInitialize()
+function LunaUF2:OnInitialize()
 
 	-- Slash Commands ----------------------------------------------------------------------
-	LunaUF.cmdtable = {type = "group", handler = LunaUF, args = {
+	LunaUF2.cmdtable = {type = "group", handler = LunaUF2, args = {
 		[L["cmd_reset"]] = {
 			type = "execute",
 			name = L["cmd_reset"],
@@ -516,14 +517,14 @@ function LunaUF:OnInitialize()
 			name = L["cmd_config"],
 			desc = L["Toggle config mode on and off."],
 			func = function ()
-					if LunaUF.db.profile.locked then
-						LunaUF:SystemMessage(L["Entering config mode."])
-						LunaUF.db.profile.locked = false
+					if LunaUF2.db.profile.locked then
+						LunaUF2:SystemMessage(L["Entering config mode."])
+						LunaUF2.db.profile.locked = false
 					else
-						LunaUF:SystemMessage(L["Exiting config mode."])
-						LunaUF.db.profile.locked = true
+						LunaUF2:SystemMessage(L["Exiting config mode."])
+						LunaUF2.db.profile.locked = true
 					end
-					LunaUF:LoadUnits()
+					LunaUF2:LoadUnits()
 				end,
 		},
 		[L["cmd_menu"]] = {
@@ -539,7 +540,7 @@ function LunaUF:OnInitialize()
 				end,
 		},
 	}}
-	LunaUF:RegisterChatCommand({"/luna", "/luf", "/lunauf", "/lunaunitframes"}, LunaUF.cmdtable)
+	LunaUF2:RegisterChatCommand({"/luna2", "/luf2", "/lunauf2", "/lunaunitframes2"}, LunaUF2.cmdtable)
 	----------------------------------------------------------------------------------------
 	
 	self:RegisterDefaults("profile", self.defaults.profile)
@@ -562,25 +563,25 @@ function LunaUF:OnInitialize()
 	self:LoadUnits()
 	self:CreateOptionsMenu()
 	self:LoadOptions()
-	LunaUF:SystemMessage(L["Loaded. The ride never ends!"])
+	LunaUF2:SystemMessage(L["Loaded. The ride never ends!"])
 	if not MobHealth3 and MobHealthFrame then
-		LunaUF:SystemMessage(L["Mobhealth2/Mobinfo2 found. Please consider MobHealth3 for a better experience."])
+		LunaUF2:SystemMessage(L["Mobhealth2/Mobinfo2 found. Please consider MobHealth3 for a better experience."])
 	end
 end
 
 --System Message Output --------------------------------------------------------------------
-function LunaUF:SystemMessage(msg)
-	DEFAULT_CHAT_FRAME:AddMessage("|cFF2150C2LunaUnitFrames|cFFFFFFFF: "..msg)
+function LunaUF2:SystemMessage(msg)
+	DEFAULT_CHAT_FRAME:AddMessage("|cFF2150C2LunaUnitFrames2|cFFFFFFFF: "..msg)
 end
 --------------------------------------------------------------------------------------------
 
 --Profile Changer---------------------------------------------------------------------------
-function LunaUF:ProfileSwitcher()
-	if (not LunaDB.ProfileSwitcher) or (event == "PARTY_MEMBERS_CHANGED" and UnitInRaid("player")) then return end
-	if LunaUF.profile_switcher_event and LunaUF:IsEventScheduled(LunaUF.profile_switcher_event) then return end
+function LunaUF2:ProfileSwitcher()
+	if (not LunaDB2.ProfileSwitcher) or (event == "PARTY_MEMBERS_CHANGED" and UnitInRaid("player")) then return end
+	if LunaUF2.profile_switcher_event and LunaUF2:IsEventScheduled(LunaUF2.profile_switcher_event) then return end
 	function do_switcher()
 		local GrpMode = 0
-		local _,currentProfile = LunaUF:GetProfile()
+		local _,currentProfile = LunaUF2:GetProfile()
 		if UnitInRaid("player") then
 			for i=1,8 do
 				if (getn(RAID_SUBGROUP_LISTS[i]) or 0) > 0 then
@@ -605,19 +606,19 @@ function LunaUF:ProfileSwitcher()
 		end
 		local profile = LunaDB.ProfileSwitcherData[GrpMode] or "Default"
 		UIDropDownMenu_SetSelectedValue(LunaOptionsFrame.pages[15].ProfileSelect, profile)
-		LunaUF:SystemMessage(L["Switched to Profile: "]..profile)
-		LunaUF:SetProfile(profile)
+		LunaUF2:SystemMessage(L["Switched to Profile: "]..profile)
+		LunaUF2:SetProfile(profile)
 
-		LunaUF.profile_switcher_event = nil
+		LunaUF2.profile_switcher_event = nil
 	end
-	LunaUF.profile_switcher_event = LunaUF:ScheduleEvent(function () do_switcher() end, 0.3)
+	LunaUF2.profile_switcher_event = LunaUF2:ScheduleEvent(function () do_switcher() end, 0.3)
 end
-LunaUF:RegisterEvent("PARTY_MEMBERS_CHANGED", "ProfileSwitcher")
-LunaUF:RegisterEvent("RAID_ROSTER_UPDATE", "ProfileSwitcher")
+LunaUF2:RegisterEvent("PARTY_MEMBERS_CHANGED", "ProfileSwitcher")
+LunaUF2:RegisterEvent("RAID_ROSTER_UPDATE", "ProfileSwitcher")
 --------------------------------------------------------------------------------------------
 
 --On Profile changed------------------------------------------------------------------------
-function LunaUF:OnProfileEnable()
+function LunaUF2:OnProfileEnable()
 	self:InitBarorder()
 	self:HideBlizzard()
 	self:LoadUnits()
@@ -626,7 +627,7 @@ end
 --------------------------------------------------------------------------------------------
 
 --Register Module --------------------------------------------------------------------------
-function LunaUF:RegisterModule(module, key, name, isBar, class)
+function LunaUF2:RegisterModule(module, key, name, isBar, class)
 	self.modules[key] = module
 
 	module.moduleKey = key
@@ -638,7 +639,7 @@ end
 --------------------------------------------------------------------------------------------
 
 --Hiding the Blizzard stuff ----------------------------------------------------------------
-function LunaUF:HideBlizzard()
+function LunaUF2:HideBlizzard()
 	-- Castbar
 	local CastingBarFrame = getglobal("CastingBarFrame")
 	if self.db.profile.blizzard.castbar then
@@ -783,17 +784,17 @@ end
 
 --------------------------------------------------------------------------------------------
 
-function LunaUF:InitBarorder()
-	if not LunaDB.ProfileSwitcherData then
-		LunaDB.ProfileSwitcherData = {}
+function LunaUF2:InitBarorder()
+	if not LunaDB2.ProfileSwitcherData then
+		LunaDB2.ProfileSwitcherData = {}
 	end
 
-	for key,unitGroup in pairs(LunaUF.db.profile.units) do
-		if not unitGroup.barorder or (LunaUF.constants.specialbarorder[key] and (getn(unitGroup.barorder.horizontal) + getn(unitGroup.barorder.vertical)) < (getn(LunaUF.constants.specialbarorder[key].horizontal) + getn(LunaUF.constants.specialbarorder[key].vertical)) or (getn(unitGroup.barorder.horizontal) + getn(unitGroup.barorder.vertical)) < (getn(LunaUF.constants.barorder.horizontal) + getn(LunaUF.constants.barorder.vertical)) ) then
-			if LunaUF.constants.specialbarorder[key] then
-				unitGroup.barorder = LunaUF:deepcopy(LunaUF.constants.specialbarorder[key])
+	for key,unitGroup in pairs(LunaUF2.db.profile.units) do
+		if not unitGroup.barorder or (LunaUF2.constants.specialbarorder[key] and (getn(unitGroup.barorder.horizontal) + getn(unitGroup.barorder.vertical)) < (getn(LunaUF2.constants.specialbarorder[key].horizontal) + getn(LunaUF2.constants.specialbarorder[key].vertical)) or (getn(unitGroup.barorder.horizontal) + getn(unitGroup.barorder.vertical)) < (getn(LunaUF2.constants.barorder.horizontal) + getn(LunaUF2.constants.barorder.vertical)) ) then
+			if LunaUF2.constants.specialbarorder[key] then
+				unitGroup.barorder = LunaUF2:deepcopy(LunaUF2.constants.specialbarorder[key])
 			else
-				unitGroup.barorder = LunaUF:deepcopy(LunaUF.constants.barorder)
+				unitGroup.barorder = LunaUF2:deepcopy(LunaUF2.constants.barorder)
 			end
 		end
 	end
@@ -801,7 +802,7 @@ end
 
 --------------------------------------------------------------------------------------------
 
-function LunaUF:LoadUnits()
+function LunaUF2:LoadUnits()
 	for _, type in pairs(self.unitList) do
 		self.Units:InitializeFrame(type)
 	end

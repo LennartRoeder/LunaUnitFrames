@@ -8,8 +8,8 @@ local function enUS() return {
 ["Toggle config mode on and off."] = "Toggle config mode on and off.",
 ["cmd_reset"] = "reset",
 ["Resets your current settings."] = "Resets your current settings.",
-["Entering config mode."] = "LunaUF: Entering config mode.",
-["Exiting config mode."] = "LunaUF: Exiting config mode.",
+["Entering config mode."] = "LunaUF2: Entering config mode.",
+["Exiting config mode."] = "LunaUF2: Exiting config mode.",
 ["cmd_menu"] = "menu",
 ["Show/hide the options menu."] = "Show/hide the options menu.",
 ["Health bar"] = "Health bar",
@@ -462,5 +462,5 @@ local function enUS() return {
 }
 end
 
-LunaUF.L:RegisterTranslations("enUS", enUS)
-LunaUF.L:RegisterTranslations("enGB", enUS)
+LunaUF2.L:RegisterTranslations("enUS", enUS)
+LunaUF2.L:RegisterTranslations("enGB", enUS)

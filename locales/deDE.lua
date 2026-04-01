@@ -11,8 +11,8 @@ local function deDE() return {
 ["Toggle config mode on and off."] = "Schalte den Konfigurationsmodus um.",
 ["cmd_reset"] = "zur\195\188cksetzen",
 ["Resets your current settings."] = "Setzt die aktuellen Einstellungen zur\195\188ck.",
-["Entering config mode."] = "LunaUF: Betrete Einstellungsmodus.",
-["Exiting config mode."] = "LunaUF: Verlasse Einstellungsmodus.",
+["Entering config mode."] = "LunaUF2: Betrete Einstellungsmodus.",
+["Exiting config mode."] = "LunaUF2: Verlasse Einstellungsmodus.",
 ["cmd_menu"] = "Men\195\188",
 ["Show/hide the options menu."] = "Zeige/verstecke das Optionsmen\195\188.",
 ["Health bar"] = "Gesundheitsleiste",
@@ -460,4 +460,4 @@ local function deDE() return {
 }
 end
 
-LunaUF.L:RegisterTranslations("deDE", deDE)
+LunaUF2.L:RegisterTranslations("deDE", deDE)

@@ -1,5 +1,5 @@
 local Combat = {}
-LunaUF:RegisterModule(Combat, "combatText", LunaUF.L["Combat text"])
+LunaUF2:RegisterModule(Combat, "combatText", LunaUF2.L["Combat text"])
 
 local function OnEvent()
 	if UnitIsUnit(arg1,this:GetParent().unit) then
@@ -35,12 +35,12 @@ function Combat:OnDisable(frame)
 end
 
 function Combat:FullUpdate(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup].combatText
-	frame.combatText.feedbackText:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF.db.profile.font..".ttf", 11, "OUTLINE")
+	local config = LunaUF2.db.profile.units[frame.unitGroup].combatText
+	frame.combatText.feedbackText:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF2.db.profile.font..".ttf", 11, "OUTLINE")
 	frame.combatText:ClearAllPoints()
 	frame.combatText:SetScale(config.size)
 	frame.combatText:SetPoint("CENTER", frame, "CENTER", config.xoffset/config.size, config.yoffset/config.size)
-	if not LunaUF.db.profile.locked then
+	if not LunaUF2.db.profile.locked then
 		frame.combatText:SetScript("OnUpdate", nil)
 		frame.combatText.feedbackText:Show()
 		frame.combatText.feedbackText:SetAlpha(1)

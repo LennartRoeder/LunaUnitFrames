@@ -1,6 +1,6 @@
 local emptyBar = {}
-local L = LunaUF.L
-LunaUF:RegisterModule(emptyBar, "emptyBar", L["Empty Bar"])
+local L = LunaUF2.L
+LunaUF2:RegisterModule(emptyBar, "emptyBar", L["Empty Bar"])
 
 function emptyBar:OnEnable(frame)
 	if not frame.emptyBar then
@@ -11,7 +11,7 @@ function emptyBar:OnEnable(frame)
 			["right"] = frame.emptyBar:CreateFontString(nil, "ARTWORK"),
 		}
 		for align,fontstring in pairs(frame.fontstrings["emptyBar"]) do
-			fontstring:SetFont(LunaUF.defaultFont, 14)
+			fontstring:SetFont(LunaUF2.defaultFont, 14)
 			fontstring:SetShadowColor(0, 0, 0, 1.0)
 			fontstring:SetShadowOffset(0.80, -0.80)
 			fontstring:SetJustifyH(string.upper(align))
@@ -25,9 +25,9 @@ function emptyBar:OnDisable(frame)
 end
 
 function emptyBar:FullUpdate(frame)
-	local tags = LunaUF.db.profile.units[frame.unitGroup].tags.bartags.emptyBar
+	local tags = LunaUF2.db.profile.units[frame.unitGroup].tags.bartags.emptyBar
 	for align,fontstring in pairs(frame.fontstrings["emptyBar"]) do
-		fontstring:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF.db.profile.font..".ttf", tags.size)
+		fontstring:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF2.db.profile.font..".ttf", tags.size)
 		fontstring:ClearAllPoints()
 		fontstring:SetHeight(frame.emptyBar:GetHeight())
 		if align == "left" then

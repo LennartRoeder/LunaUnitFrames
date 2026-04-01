@@ -457,4 +457,4 @@ local function zhCN() return {
 }
 end
 
-LunaUF.L:RegisterTranslations("zhCN", zhCN)
+LunaUF2.L:RegisterTranslations("zhCN", zhCN)

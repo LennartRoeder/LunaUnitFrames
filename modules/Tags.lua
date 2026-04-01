@@ -1,12 +1,12 @@
-local LunaUF = LunaUF
+local LunaUF2 = LunaUF2
 local Tags = {}
-LunaUF:RegisterModule(Tags, "tags", LunaUF.L["Tags"])
+LunaUF2:RegisterModule(Tags, "tags", LunaUF2.L["Tags"])
 
-local L = LunaUF.L
-local HealComm = LunaUF.HealComm
-local DruidManaLib = LunaUF.DruidManaLib
-local banzai = LunaUF.Banzai
-local tooltip = LunaUF.ScanTip
+local L = LunaUF2.L
+local HealComm = LunaUF2.HealComm
+local DruidManaLib = LunaUF2.DruidManaLib
+local banzai = LunaUF2.Banzai
+local tooltip = LunaUF2.ScanTip
 local UnitHealth = UnitHealth
 local realUnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -54,7 +54,7 @@ local function feigncheck(unit)
 		end
 		tooltip:ClearLines()
 		tooltip:SetUnitBuff(unit,i)
-		if LunaScanTipTextLeft1:GetText() == L["Feign Death"] then
+		if LunaScanTip2TextLeft1:GetText() == L["Feign Death"] then
 			return true
 		end
 	end
@@ -140,7 +140,7 @@ local defaultTags = {
 								end
 							end;
 	["range"]				= function(unit)
-								local range = LunaUF.modules.range:GetRange(unit)
+								local range = LunaUF2.modules.range:GetRange(unit)
 								if range == 10 then
 									return "0-10"
 								elseif range == 30 then
@@ -575,7 +575,7 @@ local defaultTags = {
 								end
 								local _,class = UnitClass(unit)
 								if class then
-									return Hex(LunaUF.db.profile.classColors[class])
+									return Hex(LunaUF2.db.profile.classColors[class])
 								else
 									return Hex(1,1,1)
 								end
@@ -593,11 +593,11 @@ local defaultTags = {
 								if not reaction then
 									return ""
 								elseif reaction == 4 then
-									return Hex(LunaUF.db.profile.healthColors["neutral"])
+									return Hex(LunaUF2.db.profile.healthColors["neutral"])
 								elseif reaction < 4 then
-									return Hex(LunaUF.db.profile.healthColors["hostile"])
+									return Hex(LunaUF2.db.profile.healthColors["hostile"])
 								else
-									return Hex(LunaUF.db.profile.healthColors["friendly"])
+									return Hex(LunaUF2.db.profile.healthColors["friendly"])
 								end
 							end;
 	["pvpcolor"]			= function(unit)
@@ -665,7 +665,7 @@ local defaultTags = {
 								end
 							end;
 	["threat"]			= function(unit)
-						local threat = LunaUF.modules.threat:GetThreat("player",false)
+						local threat = LunaUF2.modules.threat:GetThreat("player",false)
 						if threat then
 							local l
 							if threat >= 1000000 then
@@ -680,7 +680,7 @@ local defaultTags = {
 						return "";
 					end;
 	["pullthreattank"]			= function(unit)
-						local threat = LunaUF.modules.threat:GetThreat("player",false,true,true)
+						local threat = LunaUF2.modules.threat:GetThreat("player",false,true,true)
 						if threat then
 							local l
 							if math.abs(threat) >= 10000 then
@@ -695,7 +695,7 @@ local defaultTags = {
 						return "";
 					end;
 	["pullthreat"]			= function(unit)
-						local threat = LunaUF.modules.threat:GetThreat("player",false,true)
+						local threat = LunaUF2.modules.threat:GetThreat("player",false,true)
 						if threat then
 							local l
 							if math.abs(threat) >= 10000 then
@@ -710,7 +710,7 @@ local defaultTags = {
 						return "";
 					end;
 	["perthreat"]			= function(unit)
-						local threat = LunaUF.modules.threat:GetThreat("player",true,false,false)
+						local threat = LunaUF2.modules.threat:GetThreat("player",true,false,false)
 						if threat then
 							if threat >= 50 then
 								return Hex(1, 1 - (math.min(100,threat) - 50) / 50, 0) .. format("%.f",threat) .. "|r"
@@ -721,7 +721,7 @@ local defaultTags = {
 						return "";
 					end;
 	["perthreattank"]			= function(unit)
-						local threat = LunaUF.modules.threat:GetThreat("player",true,false,true)
+						local threat = LunaUF2.modules.threat:GetThreat("player",true,false,true)
 						if threat then
 							if threat >= 50 then
 								return Hex(1, 1 - (math.min(100,threat) - 50) / 50, 0) .. format("%.f",threat) .. "|r"
@@ -811,19 +811,19 @@ local defaultTags = {
 							end;
 	["healthcolor"]			=function(unit)
 								local percent = UnitHealth(unit) / UnitHealthMax(unit)
-								if( percent >= 1 ) then return Hex(LunaUF.db.profile.healthColors.green.r, LunaUF.db.profile.healthColors.green.g, LunaUF.db.profile.healthColors.green.b) end
-								if( percent == 0 ) then return Hex(LunaUF.db.profile.healthColors.red.r, LunaUF.db.profile.healthColors.red.g, LunaUF.db.profile.healthColors.red.b) end
+								if( percent >= 1 ) then return Hex(LunaUF2.db.profile.healthColors.green.r, LunaUF2.db.profile.healthColors.green.g, LunaUF2.db.profile.healthColors.green.b) end
+								if( percent == 0 ) then return Hex(LunaUF2.db.profile.healthColors.red.r, LunaUF2.db.profile.healthColors.red.g, LunaUF2.db.profile.healthColors.red.b) end
 								
 								local sR, sG, sB, eR, eG, eB = 0, 0, 0, 0, 0, 0
 								local modifier, inverseModifier = percent * 2, 0
 								if( percent > 0.50 ) then
-									sR, sG, sB = LunaUF.db.profile.healthColors.green.r, LunaUF.db.profile.healthColors.green.g, LunaUF.db.profile.healthColors.green.b
-									eR, eG, eB = LunaUF.db.profile.healthColors.yellow.r, LunaUF.db.profile.healthColors.yellow.g, LunaUF.db.profile.healthColors.yellow.b
+									sR, sG, sB = LunaUF2.db.profile.healthColors.green.r, LunaUF2.db.profile.healthColors.green.g, LunaUF2.db.profile.healthColors.green.b
+									eR, eG, eB = LunaUF2.db.profile.healthColors.yellow.r, LunaUF2.db.profile.healthColors.yellow.g, LunaUF2.db.profile.healthColors.yellow.b
 
 									modifier = modifier - 1
 								else
-									sR, sG, sB = LunaUF.db.profile.healthColors.yellow.r, LunaUF.db.profile.healthColors.yellow.g, LunaUF.db.profile.healthColors.yellow.b
-									eR, eG, eB = LunaUF.db.profile.healthColors.red.r, LunaUF.db.profile.healthColors.red.g, LunaUF.db.profile.healthColors.red.b
+									sR, sG, sB = LunaUF2.db.profile.healthColors.yellow.r, LunaUF2.db.profile.healthColors.yellow.g, LunaUF2.db.profile.healthColors.yellow.b
+									eR, eG, eB = LunaUF2.db.profile.healthColors.red.r, LunaUF2.db.profile.healthColors.red.g, LunaUF2.db.profile.healthColors.red.b
 								end
 								
 								inverseModifier = 1 - modifier
@@ -973,7 +973,7 @@ function Tags:SplitTags(fontstring,tagline,unit)
 end
 
 function Tags:FullUpdate(frame)
-	local bartags = LunaUF.db.profile.units[frame.unitGroup].tags.bartags
+	local bartags = LunaUF2.db.profile.units[frame.unitGroup].tags.bartags
 	for barname,barfontstrings in pairs(frame.fontstrings) do
 		for align,fontstring in pairs(barfontstrings) do
 			-- Split into functions and store
@@ -983,7 +983,7 @@ function Tags:FullUpdate(frame)
 	frame.dirty_tags = true
 end
 
-LunaUF:RegisterEvent("VARIABLES_LOADED", function ()
+LunaUF2:RegisterEvent("VARIABLES_LOADED", function ()
 	if MobHealth3 then
 		UnitHealth = function(unit)
 				local hp = MobHealth3:GetUnitHealth(unit)

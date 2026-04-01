@@ -1,7 +1,7 @@
 local XP = {}
-local L = LunaUF.L
+local L = LunaUF2.L
 local ttshown
-LunaUF:RegisterModule(XP, "xpBar", L["XP/Rep bar"], true)
+LunaUF2:RegisterModule(XP, "xpBar", L["XP/Rep bar"], true)
 
 local function OnEvent()
 	XP:Update(this:GetParent())
@@ -21,7 +21,7 @@ local function OnLeave()
 end
 
 local function OnClick()
-	LunaUF.clickedButton = arg1
+	LunaUF2.clickedButton = arg1
 	this:GetParent():Click(arg1)
 end
 
@@ -42,16 +42,16 @@ function XP:OnEnable(frame)
 		frame.xpBar:SetScript("OnEnter", OnEnter)
 		frame.xpBar:SetScript("OnLeave", OnLeave)
 		frame.xpBar:SetScript("OnClick", OnClick)
-		local click_action = LunaUF.db.profile.clickcasting.mouseDownClicks and "Down" or "Up"
+		local click_action = LunaUF2.db.profile.clickcasting.mouseDownClicks and "Down" or "Up"
 		frame.xpBar:RegisterForClicks('LeftButton' .. click_action, 'RightButton' .. click_action, 'MiddleButton' .. click_action, 'Button4' .. click_action, 'Button5' .. click_action)
 		frame.xpBar:EnableMouse(true)
 		
-		frame.xpBar.xp = LunaUF.Units:CreateBar(frame.xpBar)
+		frame.xpBar.xp = LunaUF2.Units:CreateBar(frame.xpBar)
 		frame.xpBar.xp:SetPoint("TOP", frame.xpBar, "TOP")
 				
 		if( frame.unitGroup == "player" ) then
 			frame.xpBar.unit = "player"
-			frame.xpBar.rep = LunaUF.Units:CreateBar(frame.xpBar)
+			frame.xpBar.rep = LunaUF2.Units:CreateBar(frame.xpBar)
 			frame.xpBar.rep:SetPoint("BOTTOM", frame.xpBar, "BOTTOM")
 		else
 			frame.xpBar.unit = "pet"
@@ -98,8 +98,8 @@ function XP:UpdateRep(frame)
 	frame.xpBar.rep:SetMinMaxValues(0, max)
 	frame.xpBar.rep:SetValue(reaction == 8 and max or current)
 	frame.xpBar.rep.tooltip = string.format("%s (%s): %s/%s (%.2f%% "..L["done"]..")", name, GetText("FACTION_STANDING_LABEL" .. reaction, UnitSex("player")), formatNumber(current), formatNumber(max), reaction == 8 and 100 or (current / max) * 100)
-	frame.xpBar.rep:SetStatusBarColor(color.r, color.g, color.b, LunaUF.db.profile.bars.alpha)
-	frame.xpBar.rep.background:SetVertexColor(color.r, color.g, color.b, LunaUF.db.profile.bars.backgroundAlpha)
+	frame.xpBar.rep:SetStatusBarColor(color.r, color.g, color.b, LunaUF2.db.profile.bars.alpha)
+	frame.xpBar.rep.background:SetVertexColor(color.r, color.g, color.b, LunaUF2.db.profile.bars.backgroundAlpha)
 	frame.xpBar.rep:Show()
 	if frame == GameTooltip.owner then
 		GameTooltip:SetText(frame.xpBar.rep.tooltip)
@@ -146,14 +146,14 @@ function XP:Update(frame)
 	if( ( not frame.xpBar.rep or not frame.xpBar.rep:IsShown() ) and not frame.xpBar.xp:IsShown() ) then
 		if not frame.xpBar.hidden then
 			frame.xpBar.hidden = true
-			LunaUF.Units:PositionWidgets(frame)
+			LunaUF2.Units:PositionWidgets(frame)
 		end
 		return
 	end
 	
 	if frame.xpBar.hidden then
 		frame.xpBar.hidden = nil
-		LunaUF.Units:PositionWidgets(frame)
+		LunaUF2.Units:PositionWidgets(frame)
 	end
 	if( frame.xpBar.rep and frame.xpBar.rep:IsVisible() and frame.xpBar.xp:IsVisible() ) then
 		frame.xpBar.rep:SetHeight(frame.xpBar:GetHeight() * 0.48)
@@ -180,13 +180,13 @@ end
 
 function XP:SetBarTexture(frame,texture)
 	frame.xpBar.xp:SetStatusBarTexture(texture)
-	frame.xpBar.xp:SetStatusBarColor(LunaUF.db.profile.xpColors.normal.r, LunaUF.db.profile.xpColors.normal.g, LunaUF.db.profile.xpColors.normal.b, LunaUF.db.profile.bars.alpha)
+	frame.xpBar.xp:SetStatusBarColor(LunaUF2.db.profile.xpColors.normal.r, LunaUF2.db.profile.xpColors.normal.g, LunaUF2.db.profile.xpColors.normal.b, LunaUF2.db.profile.bars.alpha)
 	
-	frame.xpBar.xp.background:SetVertexColor(LunaUF.db.profile.xpColors.normal.r, LunaUF.db.profile.xpColors.normal.g, LunaUF.db.profile.xpColors.normal.b, LunaUF.db.profile.bars.backgroundAlpha)
+	frame.xpBar.xp.background:SetVertexColor(LunaUF2.db.profile.xpColors.normal.r, LunaUF2.db.profile.xpColors.normal.g, LunaUF2.db.profile.xpColors.normal.b, LunaUF2.db.profile.bars.backgroundAlpha)
 	frame.xpBar.xp.background:SetTexture(texture)
 	
 	frame.xpBar.rested:SetStatusBarTexture(texture)
-	frame.xpBar.rested:SetStatusBarColor(LunaUF.db.profile.xpColors.rested.r, LunaUF.db.profile.xpColors.rested.g, LunaUF.db.profile.xpColors.rested.b, LunaUF.db.profile.bars.alpha)
+	frame.xpBar.rested:SetStatusBarColor(LunaUF2.db.profile.xpColors.rested.r, LunaUF2.db.profile.xpColors.rested.g, LunaUF2.db.profile.xpColors.rested.b, LunaUF2.db.profile.bars.alpha)
 
 	if( frame.xpBar.rep ) then
 		frame.xpBar.rep:SetStatusBarTexture(texture)

@@ -1,4 +1,11 @@
 # LunaUnitFrames
+
+## Changes by Fork
+
+Rename everything to extend a 2 to allow having the plugin installed twice.
+
+## Original Readme
+
 Unit Frames for Turtle WoW
 ---
 SuperWoW/UnitXP enabled

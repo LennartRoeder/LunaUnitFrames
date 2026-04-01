@@ -1,10 +1,10 @@
-local L = LunaUF.L
+local L = LunaUF2.L
 local Auras = {}
-local defaultFont = LunaUF.defaultFont
+local defaultFont = LunaUF2.defaultFont
 local ScanTip = CreateFrame("GameTooltip", "LunaAuraScanTip", nil, "GameTooltipTemplate")
 ScanTip:SetOwner(WorldFrame, "ANCHOR_TOP", 0,1000)
 ScanTip:SetClampedToScreen(0)
-LunaUF:RegisterModule(Auras, "auras", L["Auras"])
+LunaUF2:RegisterModule(Auras, "auras", L["Auras"])
 
 local mainEnchant, offEnchant, mainDur, offDur
 
@@ -89,10 +89,10 @@ local function WeaponEnchantScan(frame)
 	end
 	if hasMainHandEnchant ~= mainEnchant or hasOffHandEnchant ~= offEnchant then
 		if hasMainHandEnchant then
-			LunaBuffDB[hasMainHandEnchant] = math.max(mainDur, (LunaBuffDB[hasMainHandEnchant] or 0))
+			LunaBuffDB2[hasMainHandEnchant] = math.max(mainDur, (LunaBuffDB2[hasMainHandEnchant] or 0))
 		end
 		if hasOffHandEnchant then
-			LunaBuffDB[hasOffHandEnchant] = math.max(offDur, (LunaBuffDB[hasOffHandEnchant] or 0))
+			LunaBuffDB2[hasOffHandEnchant] = math.max(offDur, (LunaBuffDB2[hasOffHandEnchant] or 0))
 		end
 		mainEnchant = hasMainHandEnchant
 		offEnchant = hasOffHandEnchant
@@ -140,8 +140,8 @@ end
 
 function Auras:OnEnable(frame)
 	local isPlayer = frame.unitGroup == "player"
-	if not LunaBuffDB then
-		LunaBuffDB = {}
+	if not LunaBuffDB2 then
+		LunaBuffDB2 = {}
 	end
 	if not frame.auras then
 		frame.auras = CreateFrame("Frame", nil, frame)
@@ -223,27 +223,27 @@ function Auras:OnEnable(frame)
 		end
 	end
 	for num,button in pairs(frame.auras.buffbuttons.buttons) do
-		if( LunaUF.db.profile.auraborderType == L["none"] ) then
+		if( LunaUF2.db.profile.auraborderType == L["none"] ) then
 			button.border:Hide()
-		elseif( LunaUF.db.profile.auraborderType == "blizzard" ) then
+		elseif( LunaUF2.db.profile.auraborderType == "blizzard" ) then
 			button.border:SetTexture("Interface\\Buttons\\UI-Debuff-Overlays")
 			button.border:SetTexCoord(0.296875, 0.5703125, 0, 0.515625)
 			button.border:Show()
 		else
-			button.border:SetTexture("Interface\\AddOns\\LunaUnitFrames\\media\\textures\\borders\\border-" .. LunaUF.db.profile.auraborderType)
+			button.border:SetTexture("Interface\\AddOns\\LunaUnitFrames\\media\\textures\\borders\\border-" .. LunaUF2.db.profile.auraborderType)
 			button.border:SetTexCoord(0, 1, 0, 1)
 			button.border:Show()
 		end
 	end
 	for num,button in pairs(frame.auras.debuffbuttons.buttons) do
-		if( LunaUF.db.profile.auraborderType == L["none"] ) then
+		if( LunaUF2.db.profile.auraborderType == L["none"] ) then
 			button.border:Hide()
-		elseif( LunaUF.db.profile.auraborderType == "blizzard" ) then
+		elseif( LunaUF2.db.profile.auraborderType == "blizzard" ) then
 			button.border:SetTexture("Interface\\Buttons\\UI-Debuff-Overlays")
 			button.border:SetTexCoord(0.296875, 0.5703125, 0, 0.515625)
 			button.border:Show()
 		else
-			button.border:SetTexture("Interface\\AddOns\\LunaUnitFrames\\media\\textures\\borders\\border-" .. LunaUF.db.profile.auraborderType)
+			button.border:SetTexture("Interface\\AddOns\\LunaUnitFrames\\media\\textures\\borders\\border-" .. LunaUF2.db.profile.auraborderType)
 			button.border:SetTexCoord(0, 1, 0, 1)
 			button.border:Show()
 		end
@@ -275,12 +275,12 @@ local function TimerUpdate()
 		ScanTip:ClearLines()
 		ScanTip:SetPlayerBuff(this.auraID)
 		local buffName = LunaAuraScanTipTextLeft1:GetText()
-		CooldownFrame_SetTimer(this.cooldown, GetTime() - (LunaBuffDB[buffName] - timeleft), LunaBuffDB[buffName], 1)
+		CooldownFrame_SetTimer(this.cooldown, GetTime() - (LunaBuffDB2[buffName] - timeleft), LunaBuffDB2[buffName], 1)
 	end
 	if timeleft > 9 then
-		this.timeFontstring:SetFont(defaultFont, LunaUF.db.profile.units["player"].auras.timertextsmallsize, "OUTLINE")
+		this.timeFontstring:SetFont(defaultFont, LunaUF2.db.profile.units["player"].auras.timertextsmallsize, "OUTLINE")
 	else
-		this.timeFontstring:SetFont(defaultFont, LunaUF.db.profile.units["player"].auras.timertextbigsize, "OUTLINE")
+		this.timeFontstring:SetFont(defaultFont, LunaUF2.db.profile.units["player"].auras.timertextbigsize, "OUTLINE")
 	end
 	this.timeFontstring:SetText(getTimeString(timeleft))
 	this.timeleft = timeleft
@@ -297,30 +297,30 @@ local function WTimerUpdate()
 	if this.auraID == 16 and mainEnchant then
 		mainHandExpiration = mainHandExpiration / 1000
 		if this.cooldown:IsVisible() then
-			CooldownFrame_SetTimer(this.cooldown, GetTime() - (LunaBuffDB[mainEnchant] - mainHandExpiration), LunaBuffDB[mainEnchant], 1)
+			CooldownFrame_SetTimer(this.cooldown, GetTime() - (LunaBuffDB2[mainEnchant] - mainHandExpiration), LunaBuffDB2[mainEnchant], 1)
 		end
 		if mainHandExpiration > 9 then
-			this.timeFontstring:SetFont(defaultFont, LunaUF.db.profile.units["player"].auras.timertextsmallsize, "OUTLINE")
+			this.timeFontstring:SetFont(defaultFont, LunaUF2.db.profile.units["player"].auras.timertextsmallsize, "OUTLINE")
 		else
-			this.timeFontstring:SetFont(defaultFont, LunaUF.db.profile.units["player"].auras.timertextbigsize, "OUTLINE")
+			this.timeFontstring:SetFont(defaultFont, LunaUF2.db.profile.units["player"].auras.timertextbigsize, "OUTLINE")
 		end
 		this.timeFontstring:SetText(getTimeString(mainHandExpiration))
 	elseif offEnchant then
 		offHandExpiration = offHandExpiration / 1000
 		if this.cooldown:IsVisible() then
-			CooldownFrame_SetTimer(this.cooldown, GetTime() - (LunaBuffDB[offEnchant] - offHandExpiration), LunaBuffDB[offEnchant], 1)
+			CooldownFrame_SetTimer(this.cooldown, GetTime() - (LunaBuffDB2[offEnchant] - offHandExpiration), LunaBuffDB2[offEnchant], 1)
 		end
 		if offHandExpiration > 9 then
-			this.timeFontstring:SetFont(defaultFont, LunaUF.db.profile.units["player"].auras.timertextsmallsize, "OUTLINE")
+			this.timeFontstring:SetFont(defaultFont, LunaUF2.db.profile.units["player"].auras.timertextsmallsize, "OUTLINE")
 		else
-			this.timeFontstring:SetFont(defaultFont, LunaUF.db.profile.units["player"].auras.timertextbigsize, "OUTLINE")
+			this.timeFontstring:SetFont(defaultFont, LunaUF2.db.profile.units["player"].auras.timertextbigsize, "OUTLINE")
 		end
 		this.timeFontstring:SetText(getTimeString(offHandExpiration))
 	end
 end
 
 function Auras:UpdateFrames(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup].auras
+	local config = LunaUF2.db.profile.units[frame.unitGroup].auras
 	local buffIndex, untilCancelled, dtype, texture, stacks, timeleft, buffName
 	local hasMainHandEnchant, mainHandExpiration, mainHandCharges, hasOffHandEnchant, offHandExpiration, offHandCharges = GetWeaponEnchantInfo()
 	for i,button in ipairs(frame.auras.buffbuttons.buttons) do
@@ -350,7 +350,7 @@ function Auras:UpdateFrames(frame)
 		else
 			texture = nil
 		end
-		if not LunaUF.db.profile.locked then
+		if not LunaUF2.db.profile.locked then
 			if i < 33 and config.buffs then
 				texture = "Interface\\Icons\\Spell_ChargePositive"
 			elseif config.weaponbuffs and ((not config.buffs and i < 3) or (config.buffs and i > 32)) then
@@ -373,15 +373,15 @@ function Auras:UpdateFrames(frame)
 			button.auraID = buffIndex or i
 			button.filter = "HELPFUL"
 			if config.bordercolor and dtype then
-				button.border:SetVertexColor(unpack(LunaUF.db.profile.magicColors[dtype]))
+				button.border:SetVertexColor(unpack(LunaUF2.db.profile.magicColors[dtype]))
 			else
 				button.border:SetVertexColor(1,1,1)
 			end
 			if timeleft and timeleft > 0 and buffName then
-				if (not LunaBuffDB[buffName] or LunaBuffDB[buffName] < timeleft) then
-					LunaBuffDB[buffName] = timeleft
+				if (not LunaBuffDB2[buffName] or LunaBuffDB2[buffName] < timeleft) then
+					LunaBuffDB2[buffName] = timeleft
 				end
-				CooldownFrame_SetTimer(button.cooldown, GetTime() - (LunaBuffDB[buffName] - timeleft), LunaBuffDB[buffName], 1)
+				CooldownFrame_SetTimer(button.cooldown, GetTime() - (LunaBuffDB2[buffName] - timeleft), LunaBuffDB2[buffName], 1)
 				button.timeleft = timeleft
 				button:SetScript("OnUpdate", TimerUpdate)
 				if config.timerspinenabled then
@@ -399,7 +399,7 @@ function Auras:UpdateFrames(frame)
 				button:SetScript("OnUpdate", nil)
 				button.timeFontstring:Hide()
 			end
-		elseif config.weaponbuffs and hasMainHandEnchant and frame.unitGroup == "player" and LunaUF.db.profile.locked then
+		elseif config.weaponbuffs and hasMainHandEnchant and frame.unitGroup == "player" and LunaUF2.db.profile.locked then
 			button:Show()
 			--button.large = true
 			button.filter = "TEMP"
@@ -428,7 +428,7 @@ function Auras:UpdateFrames(frame)
 			end
 			button:SetScript("OnUpdate", WTimerUpdate)
 			hasMainHandEnchant = nil
-		elseif config.weaponbuffs and hasOffHandEnchant and frame.unitGroup == "player" and LunaUF.db.profile.locked then
+		elseif config.weaponbuffs and hasOffHandEnchant and frame.unitGroup == "player" and LunaUF2.db.profile.locked then
 			button:Show()
 			--button.large = true
 			button.filter = "TEMP"
@@ -483,7 +483,7 @@ function Auras:UpdateFrames(frame)
 		else
 			button.large = nil
 		end
-		if not LunaUF.db.profile.locked then
+		if not LunaUF2.db.profile.locked then
 			texture = "Interface\\Icons\\Spell_ChargeNegative"
 			stacks = i
 		end
@@ -502,15 +502,15 @@ function Auras:UpdateFrames(frame)
 			button.auraID = buffIndex or i
 			button.filter = "HARMFUL"
 			if config.bordercolor and dtype then
-				button.border:SetVertexColor(unpack(LunaUF.db.profile.magicColors[dtype]))
+				button.border:SetVertexColor(unpack(LunaUF2.db.profile.magicColors[dtype]))
 			else
 				button.border:SetVertexColor(1,1,1)
 			end
 			if timeleft and timeleft > 0 and buffName then
-				if (not LunaBuffDB[buffName] or LunaBuffDB[buffName] < timeleft) then
-					LunaBuffDB[buffName] = timeleft
+				if (not LunaBuffDB2[buffName] or LunaBuffDB2[buffName] < timeleft) then
+					LunaBuffDB2[buffName] = timeleft
 				end
-				CooldownFrame_SetTimer(button.cooldown, GetTime() - (LunaBuffDB[buffName] - timeleft), LunaBuffDB[buffName], 1)
+				CooldownFrame_SetTimer(button.cooldown, GetTime() - (LunaBuffDB2[buffName] - timeleft), LunaBuffDB2[buffName], 1)
 				button.timeleft = timeleft
 				button:SetScript("OnUpdate", TimerUpdate)
 				if config.timerspinenabled then
@@ -557,7 +557,7 @@ function Auras:UpdateFrames(frame)
 end
 
 function Auras:UpdateLayout(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup].auras
+	local config = LunaUF2.db.profile.units[frame.unitGroup].auras
 	local debuffanchor = config.buffpos == config.debuffpos and frame.auras.buffbuttons or frame
 	frame.auras.buffbuttons:ClearAllPoints()
 	frame.auras.debuffbuttons:ClearAllPoints()

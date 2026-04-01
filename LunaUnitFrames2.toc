@@ -1,7 +1,7 @@
 ## Interface: 11200
-## Title: Luna Unit Frames
-## Title-zhCN: LunaUF |cffffffff露娜框架|r |cff7fff7f-Ace2-|r
-## Title-deDE: Luna Unit Frames
+## Title: Luna Unit Frames 2
+## Title-zhCN: LunaUF2 |cffffffff露娜框架|r |cff7fff7f-Ace2-|r
+## Title-deDE: Luna Unit Frames 2
 ## Notes: Lightweight Unit Frames in a modern look.
 ## Notes-ruRU: Легкие панели в современном стиле.
 ## Notes-zhCN: 轻量级的现代风框架
@@ -10,7 +10,7 @@
 ## Author-zhCN: 原作者Avi，中文协作者zerosnake0
 ## Author-deDE: Avi
 ##
-## SavedVariables: LunaDB, LunaBuffDB
+## SavedVariables: LunaDB2, LunaBuffDB2
 ## OptionalDeps: Blizzard_RaidUI, Ace2, RosterLib, BanzaiLib, HealComm, DruidManaLib, MobHealth, Clique, FuBar, FuBarPlugin-2.0, Babble-2.2, CompostLib, SurfaceLib, Surfaces, DewdropLib, TabletLib, Opium
 ## X-Category: UnitFrame
 
@@ -45,7 +45,7 @@ libs\HealComm-1.0\HealComm-1.0.lua
 libs\DruidManaLib-1.0\DruidManaLib-1.0.lua
 libs\CastLib-1.0\CastLib-1.0.lua
 
-LunaUnitFrames.lua
+LunaUnitFrames2.lua
 
 locales\enUS.lua
 locales\zhCN.lua

@@ -1,11 +1,11 @@
 local Range = {}
 AceLibrary("AceHook-2.1"):embed(Range)
 AceLibrary("AceEvent-2.0"):embed(Range)
-local L = LunaUF.L
-local BS = LunaUF.BS
-local ScanTip = LunaUF.ScanTip
+local L = LunaUF2.L
+local BS = LunaUF2.BS
+local ScanTip = LunaUF2.ScanTip
 local rosterLib = AceLibrary("RosterLib-2.0")
-LunaUF:RegisterModule(Range, "range", L["Range"])
+LunaUF2:RegisterModule(Range, "range", L["Range"])
 local MapFileName
 local roster = {}
 local ZoneWatch = CreateFrame("Frame")
@@ -279,7 +279,7 @@ local function OnEvent()
 	if event == "ZONE_CHANGED_NEW_AREA" or event == "PLAYER_ENTERING_WORLD" or not event then
 		SetMapToCurrentZone()
 		MapFileName, _, _ = GetMapInfo()
-	elseif not (has_superwow or has_unitxp) and LunaUF.db.profile.RangeCLparsing and events[event] then
+	elseif not (has_superwow or has_unitxp) and LunaUF2.db.profile.RangeCLparsing and events[event] then
 		ParseCombatMessage(events[event], arg1)
 	end
 end
@@ -298,7 +298,7 @@ function Range:GetRange(UnitID)
 
 		if has_unitxp and UnitIsVisible(UnitID) then
 			local d = UnitXP("distanceBetween","player",UnitID)
-			if d <= 100 and LunaUF.db.profile.RangeLoS then
+			if d <= 100 and LunaUF2.db.profile.RangeLoS then
 				return UnitXP("inSight", "player", UnitID) and d or 100
 			end
 			return d
@@ -396,7 +396,7 @@ function Range:UseAction(slot, checkCursor, onSelf)
 	if not GetActionText(slot) and SpellIsTargeting() then
 		ScanTip:ClearLines()
 		ScanTip:SetAction(slot)
-		local spell = LunaScanTipTextLeft1:GetText()
+		local spell = LunaScanTip2TextLeft1:GetText()
 		spell = string.lower(spell)
 		if HealSpells[playerClass] and HealSpells[playerClass][spell] then
 			if not self:IsEventScheduled("ScanRoster") then
@@ -429,16 +429,16 @@ function Range:OnDisable(frame)
 end
 
 function Range:FullUpdate(frame)
-	if frame.DisableRangeAlpha or (GetTime() - frame.range.lastUpdate) < (LunaUF.db.profile.RangePolRate or 1.5) then return end
+	if frame.DisableRangeAlpha or (GetTime() - frame.range.lastUpdate) < (LunaUF2.db.profile.RangePolRate or 1.5) then return end
 	frame.range.lastUpdate = GetTime()
 	local range = self:GetRange(frame.unit)
 
-	local healththreshold = LunaUF.db.profile.units.raid.healththreshold
+	local healththreshold = LunaUF2.db.profile.units.raid.healththreshold
 	if (not healththreshold.enabled) then
 		if range and range <= 40 then
-			frame:SetAlpha(LunaUF.db.profile.units[frame.unitGroup].fader.enabled and LunaUF.db.profile.units[frame.unitGroup].fader.combatAlpha or 1)
+			frame:SetAlpha(LunaUF2.db.profile.units[frame.unitGroup].fader.enabled and LunaUF2.db.profile.units[frame.unitGroup].fader.combatAlpha or 1)
 		else
-			frame:SetAlpha(LunaUF.db.profile.units[frame.unitGroup].range.alpha)
+			frame:SetAlpha(LunaUF2.db.profile.units[frame.unitGroup].range.alpha)
 		end
 	else -- TODO Remove dependency on the Range module for healththreshold.
 		local percent = UnitHealth(frame.unit) / UnitHealthMax(frame.unit)
@@ -452,7 +452,7 @@ function Range:FullUpdate(frame)
 			if (percent <= healththreshold.threshold) then
 				frame:SetAlpha(healththreshold.outOfRangeBelowAlpha)
 			else
-				frame:SetAlpha(LunaUF.db.profile.units[frame.unitGroup].range.alpha)
+				frame:SetAlpha(LunaUF2.db.profile.units[frame.unitGroup].range.alpha)
 			end
 		end
 	end

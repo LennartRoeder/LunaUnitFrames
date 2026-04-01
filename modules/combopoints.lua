@@ -1,5 +1,5 @@
 local Combo = {}
-LunaUF:RegisterModule(Combo, "comboPoints", LunaUF.L["Combo points"])
+LunaUF2:RegisterModule(Combo, "comboPoints", LunaUF2.L["Combo points"])
 local _,playerclass = UnitClass("player")
 
 local function OnEvent()
@@ -29,17 +29,17 @@ end
 function Combo:Update(frame)
 	local points = GetComboPoints()
 	if points == 0 and UnitExists("target") then
-		if LunaUF.db.profile.units[frame.unitGroup].comboPoints.hide and not frame.comboPoints.hidden then
+		if LunaUF2.db.profile.units[frame.unitGroup].comboPoints.hide and not frame.comboPoints.hidden then
 			frame.comboPoints.hidden = true
-			LunaUF.Units:PositionWidgets(frame)
-		elseif not LunaUF.db.profile.units[frame.unitGroup].comboPoints.hide and frame.comboPoints.hidden then
+			LunaUF2.Units:PositionWidgets(frame)
+		elseif not LunaUF2.db.profile.units[frame.unitGroup].comboPoints.hide and frame.comboPoints.hidden then
 			frame.comboPoints.hidden = nil
-			LunaUF.Units:PositionWidgets(frame)
+			LunaUF2.Units:PositionWidgets(frame)
 		end
 	else
 		if frame.comboPoints.hidden then
 			frame.comboPoints.hidden = false
-			LunaUF.Units:PositionWidgets(frame)
+			LunaUF2.Units:PositionWidgets(frame)
 		end
 	end
 	for id,block in ipairs(frame.comboPoints.blocks) do
@@ -58,7 +58,7 @@ function Combo:FullUpdate(frame)
 		texture:SetHeight(frame.comboPoints:GetHeight())
 		texture:SetWidth(blockWidth)
 		texture:ClearAllPoints()
-		if( LunaUF.db.profile.units[frame.unitGroup].comboPoints.growth == "LEFT" ) then
+		if( LunaUF2.db.profile.units[frame.unitGroup].comboPoints.growth == "LEFT" ) then
 			if( id > 1 ) then
 				texture:SetPoint("TOPRIGHT", frame.comboPoints.blocks[id - 1], "TOPLEFT", -1, 0)
 			else

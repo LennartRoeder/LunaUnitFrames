@@ -8,8 +8,8 @@ local function ruRU() return {
 	["Toggle config mode on and off."] = "Переключить режим настроек на вкл. или выкл.",
 --	["cmd_reset"] = "reset",
 	["Resets your current settings."] = "Сброс текущих настроек.",
-	["Entering config mode."] = "LunaUF: Вход в режим настроек.",
-	["Exiting config mode."] = "LunaUF: Выход из режима настроек.",
+	["Entering config mode."] = "LunaUF2: Вход в режим настроек.",
+	["Exiting config mode."] = "LunaUF2: Выход из режима настроек.",
 --	["cmd_menu"] = "menu",
 	["Show/hide the options menu."] = "Показать/скрыть меню настроек.",
 	["Health bar"] = "Панель здоровья",
@@ -456,4 +456,4 @@ local function ruRU() return {
 	["Halls of Strife"] = "Залы Раздора",
 } end
 
-LunaUF.L:RegisterTranslations("ruRU", ruRU)
+LunaUF2.L:RegisterTranslations("ruRU", ruRU)

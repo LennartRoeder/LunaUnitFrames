@@ -1,9 +1,9 @@
-local LunaUF = LunaUF
+local LunaUF2 = LunaUF2
 local Borders = {}
-LunaUF:RegisterModule(Borders, "borders", LunaUF.L["Borders"])
-local L = LunaUF.L
-local banzai = LunaUF.Banzai
-local ScanTip = LunaUF.ScanTip
+LunaUF2:RegisterModule(Borders, "borders", LunaUF2.L["Borders"])
+local L = LunaUF2.L
+local banzai = LunaUF2.Banzai
+local ScanTip = LunaUF2.ScanTip
 local positions = {"TOP","BOTTOM","LEFT","RIGHT"}
 
 local function SetColor(frame, r, g, b, a)
@@ -56,7 +56,7 @@ function Borders:OnDisable(frame)
 end
 
 function Borders:OnAggro(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup].borders
+	local config = LunaUF2.db.profile.units[frame.unitGroup].borders
 	local aggro = banzai:GetUnitAggroByUnitId(frame.unit)
 	if config.mode == "aggro" then
 		if aggro then
@@ -68,15 +68,15 @@ function Borders:OnAggro(frame)
 end
 
 function Borders:OnAura(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup].borders
-	local SquareConfig = LunaUF.db.profile.units.raid.squares
+	local config = LunaUF2.db.profile.units[frame.unitGroup].borders
+	local SquareConfig = LunaUF2.db.profile.units.raid.squares
 	local debuffed = 4
 	local buffname, disptype
 	if config.mode == "track" then
 		for i=1,16 do
 			ScanTip:ClearLines()
 			ScanTip:SetUnitDebuff(frame.unit,i)
-			buffname = LunaScanTipTextLeft1:GetText() or ""
+			buffname = LunaScanTip2TextLeft1:GetText() or ""
 			buffname = string.lower(buffname)
 			for key,debuff in pairs(SquareConfig.debuffs.names) do
 				if debuff ~= "" and string.find(buffname, debuff) then
@@ -95,7 +95,7 @@ function Borders:OnAura(frame)
 		for i=1,16 do
 			_,_,disptype = UnitDebuff(frame.unit,i,config.owndispdebuffs)
 			if disptype then
-				local r,g,b = unpack(LunaUF.db.profile.magicColors[disptype])
+				local r,g,b = unpack(LunaUF2.db.profile.magicColors[disptype])
 				SetColor(frame, r, g, b, 1)
 				return
 			end

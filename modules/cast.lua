@@ -1,9 +1,9 @@
-local LunaUF = LunaUF
+local LunaUF2 = LunaUF2
 local Cast = CreateFrame("Frame")
-local L = LunaUF.L
-local BS = LunaUF.BS
-local CL = LunaUF.CL
-LunaUF:RegisterModule(Cast, "castBar", L["Cast bar"], true)
+local L = LunaUF2.L
+local BS = LunaUF2.BS
+local CL = LunaUF2.CL
+LunaUF2:RegisterModule(Cast, "castBar", L["Cast bar"], true)
 
 local has_superwow = SetAutoloot and true or false
 
@@ -365,8 +365,8 @@ local function TriggerCast(mob, spell, castime)
 	else
 		CasterDB[mob] = {sp = spell, start = GetTime(), ct = castime}
 	end
-	for _,frame in pairs(LunaUF.Units.frameList) do
-		if frame.unit and frame.castBar and LunaUF.db.profile.units[frame.unitGroup].castBar.enabled then
+	for _,frame in pairs(LunaUF2.Units.frameList) do
+		if frame.unit and frame.castBar and LunaUF2.db.profile.units[frame.unitGroup].castBar.enabled then
 			if has_superwow then
 				if UnitExists(mob) and UnitIsUnit(frame.unit,mob) then Cast:FullUpdate(frame) end
 			elseif mob == UnitName(frame.unit) then
@@ -380,8 +380,8 @@ local function TriggerCastStop(mob, spell)
 	if CasterDB[mob] and CasterDB[mob].sp and Spells[spell] and not (Spells[spell].ni and Spells[CasterDB[mob].sp] and Spells[CasterDB[mob].sp].ni) then
 		if (CasterDB[mob].start + (CasterDB[mob].ct or 0)) > GetTime() then
 			CasterDB[mob].ct = 0
-			for _,frame in pairs(LunaUF.Units.frameList) do
-				if frame.unit and frame.castBar and LunaUF.db.profile.units[frame.unitGroup].castBar.enabled and mob == UnitName(frame.unit) then
+			for _,frame in pairs(LunaUF2.Units.frameList) do
+				if frame.unit and frame.castBar and LunaUF2.db.profile.units[frame.unitGroup].castBar.enabled and mob == UnitName(frame.unit) then
 					Cast:FullUpdate(frame)
 				end
 			end
@@ -447,7 +447,7 @@ local function ProcessData(mob, spell, special, maybe_castime)
 end
 
 function Cast:CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_BUFFS(arg1)
-	if LunaUF.db.profile.enemyCastbars then return end
+	if LunaUF2.db.profile.enemyCastbars then return end
 	for _, pattern in pairs(CHAT_PATTERNS["gains"]) do
 		for mob, spell in string.gfind(arg1, pattern) do
 			ProcessData(mob, spell, "gains")
@@ -465,7 +465,7 @@ function Cast:UNIT_CASTEVENT(caster,target,action,spell_id,cast_time)
 end
 
 function Cast:CHAT_MSG_SPELL_HOSTILEPLAYER_BUFF(arg1)
-	if LunaUF.db.profile.enemyCastbars or has_superwow then return end
+	if LunaUF2.db.profile.enemyCastbars or has_superwow then return end
 	-- casts/performs
 	for _, pattern in pairs(CHAT_PATTERNS["casts"]) do
 		for mob, spell in string.gfind(arg1, pattern) do
@@ -491,7 +491,7 @@ Cast.CHAT_MSG_SPELL_FRIENDLYPLAYER_DAMAGE = Cast.CHAT_MSG_SPELL_HOSTILEPLAYER_BU
 Cast.CHAT_MSG_SPELL_PARTY_DAMAGE = Cast.CHAT_MSG_SPELL_HOSTILEPLAYER_BUFF
 
 function Cast:CHAT_MSG_SPELL_PERIODIC_CREATURE_DAMAGE(arg1)
-	if LunaUF.db.profile.enemyCastbars then return end
+	if LunaUF2.db.profile.enemyCastbars then return end
 	for _, pattern in pairs(CHAT_PATTERNS["afflicted"]) do
 		for mob, spell in string.gfind(arg1, pattern) do
 			ProcessData(mob, spell, "afflicted")
@@ -504,7 +504,7 @@ Cast.CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE = Cast.CHAT_MSG_SPELL_PERIODI
 Cast.CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE = Cast.CHAT_MSG_SPELL_PERIODIC_CREATURE_DAMAGE
 
 function Cast:CHAT_MSG_SPELL_SELF_DAMAGE(arg1)
-	if LunaUF.db.profile.enemyCastbars then return end
+	if LunaUF2.db.profile.enemyCastbars then return end
 	for _, pattern in pairs(CHAT_PATTERNS["selfinterrupt"]) do
 		for mob, spell in string.gfind(arg1, pattern) do
 			ProcessData(mob, spell, "hit")
@@ -525,9 +525,9 @@ local function OnUpdateOther()
 			this.casting = false
 			this.Text:Hide()
 			this.Time:Hide()
-			if LunaUF.db.profile.units[this:GetParent().unitGroup].castBar.hide and not this.hidden then
+			if LunaUF2.db.profile.units[this:GetParent().unitGroup].castBar.hide and not this.hidden then
 				this.hidden = true
-				LunaUF.Units:PositionWidgets(this:GetParent())
+				LunaUF2.Units:PositionWidgets(this:GetParent())
 			end
 		end
 	end
@@ -637,7 +637,7 @@ local function OnEvent()
 		frame.castBar.delaySum = 0
 		local spellName = CL:GetSpell()
 		frame.castBar.Text:SetText(spellName)
-		if LunaUF.db.profile.units[frame.unitGroup].castBar.icon then
+		if LunaUF2.db.profile.units[frame.unitGroup].castBar.icon then
 			frame.castBar.icon:SetTexture(BS:GetSpellIcon(spellName or "") or GetItemIconTexture(spellName))
 		end
 		frame.castBar:SetScript("OnUpdate", OnUpdatePlayer)
@@ -664,7 +664,7 @@ local function OnEvent()
 		frame.castBar.channeling = false
 		frame.castBar.delaySum = 0
 		frame.castBar.Text:SetText(arg1)
-		if LunaUF.db.profile.units[frame.unitGroup].castBar.icon then
+		if LunaUF2.db.profile.units[frame.unitGroup].castBar.icon then
 			frame.castBar.icon:SetTexture(BS:GetSpellIcon(arg1) or GetItemIconTexture(arg1))
 		end
 		frame.castBar.bar:SetMinMaxValues(0, frame.castBar.maxValue)
@@ -715,15 +715,15 @@ local function OnAimed(cast)
 				casttime = casttime/0.5
 			end
 		end
-		for _,uframe in pairs(LunaUF.Units.frameList) do
-			if uframe.castBar and LunaUF.db.profile.units[uframe.unitGroup].castBar.enabled and UnitIsUnit(uframe.unit,"player") then
+		for _,uframe in pairs(LunaUF2.Units.frameList) do
+			if uframe.castBar and LunaUF2.db.profile.units[uframe.unitGroup].castBar.enabled and UnitIsUnit(uframe.unit,"player") then
 				uframe.castBar.maxValue = casttime + (latency/1000)
 				uframe.castBar.casting = true
 				uframe.castBar.channeling = false
 				uframe.castBar.delaySum = 0
 				uframe.castBar.startTime = GetTime()
 				uframe.castBar.Text:SetText(BS["Aimed Shot"])
-				if LunaUF.db.profile.units[uframe.unitGroup].castBar.icon then
+				if LunaUF2.db.profile.units[uframe.unitGroup].castBar.icon then
 					uframe.castBar.icon:SetTexture(BS:GetSpellIcon("Aimed Shot"))
 				end
 				uframe.castBar.bar:SetMinMaxValues(0, uframe.castBar.maxValue)
@@ -734,15 +734,15 @@ local function OnAimed(cast)
 		end
 	elseif cast == BS["Multi-Shot"] then
 		local _,_, latency = GetNetStats()
-		for _,uframe in pairs(LunaUF.Units.frameList) do
-			if uframe.castBar and LunaUF.db.profile.units[uframe.unitGroup].castBar.enabled and UnitIsUnit(uframe.unit,"player") then
+		for _,uframe in pairs(LunaUF2.Units.frameList) do
+			if uframe.castBar and LunaUF2.db.profile.units[uframe.unitGroup].castBar.enabled and UnitIsUnit(uframe.unit,"player") then
 				uframe.castBar.maxValue = 0.5 + (latency/1000)
 				uframe.castBar.casting = true
 				uframe.castBar.channeling = false
 				uframe.castBar.delaySum = 0
 				uframe.castBar.startTime = GetTime()
 				uframe.castBar.Text:SetText(BS["Multi-Shot"])
-				if LunaUF.db.profile.units[uframe.unitGroup].castBar.icon then
+				if LunaUF2.db.profile.units[uframe.unitGroup].castBar.icon then
 					uframe.castBar.icon:SetTexture(BS:GetSpellIcon("Multi-Shot"))
 				end
 				uframe.castBar.bar:SetMinMaxValues(0, uframe.castBar.maxValue)
@@ -758,7 +758,7 @@ local function OnSizeChanged(frame)
 	local castBar = frame or this
 	local height = castBar:GetHeight()
 	local width = castBar:GetWidth()
-	local config = LunaUF.db.profile.units[castBar:GetParent().unitGroup].castBar
+	local config = LunaUF2.db.profile.units[castBar:GetParent().unitGroup].castBar
 	if config.icon then
 		castBar.icon:ClearAllPoints()
 		castBar.bar:ClearAllPoints()
@@ -796,7 +796,7 @@ end
 function Cast:OnEnable(frame)
 	if not frame.castBar then
 		frame.castBar = CreateFrame("Frame", nil, frame)
-		frame.castBar.bar = LunaUF.Units:CreateBar(frame.castBar)
+		frame.castBar.bar = LunaUF2.Units:CreateBar(frame.castBar)
 		frame.castBar.bar:SetAllPoints(frame.castBar)
 		frame.castBar.icon = frame.castBar:CreateTexture(nil, "ARTWORK")
 		frame.castBar.Text = frame.castBar.bar:CreateFontString(nil, "ARTWORK")
@@ -821,8 +821,8 @@ function Cast:OnEnable(frame)
 	if playerRace == "Troll" and playerClass == "HUNTER" then
 		frame.castBar:RegisterEvent("UNIT_AURA")
 	end
-	if not LunaUF:IsEventRegistered("CASTLIB_STARTCAST") and playerClass == "HUNTER" then
-		LunaUF:RegisterEvent("CASTLIB_STARTCAST", OnAimed)
+	if not LunaUF2:IsEventRegistered("CASTLIB_STARTCAST") and playerClass == "HUNTER" then
+		LunaUF2:RegisterEvent("CASTLIB_STARTCAST", OnAimed)
 	end
 	frame.castBar:SetScript("OnSizeChanged", OnSizeChanged)
 end
@@ -840,35 +840,35 @@ end
 
 function Cast:FullUpdate(frame)
 	local unitname = UnitName(frame.unit)
-	frame.castBar.Text:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF.db.profile.font..".ttf", LunaUF.db.profile.units[frame.unitGroup].tags.bartags["castBar"].size)
-	frame.castBar.Time:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF.db.profile.font..".ttf", LunaUF.db.profile.units[frame.unitGroup].tags.bartags["castBar"].size)
-	if LunaUF.db.profile.units[frame.unitGroup].castBar.vertical then
+	frame.castBar.Text:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF2.db.profile.font..".ttf", LunaUF2.db.profile.units[frame.unitGroup].tags.bartags["castBar"].size)
+	frame.castBar.Time:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF2.db.profile.font..".ttf", LunaUF2.db.profile.units[frame.unitGroup].tags.bartags["castBar"].size)
+	if LunaUF2.db.profile.units[frame.unitGroup].castBar.vertical then
 		frame.castBar.bar:SetOrientation("VERTICAL")
 	else
 		frame.castBar.bar:SetOrientation("HORIZONTAL")
 	end
-	frame.castBar.bar:SetReverse(LunaUF.db.profile.units[frame.unitGroup].castBar.reverse)
-	if frame.castBar and LunaUF.db.profile.units[frame.unitGroup].castBar.enabled and unitname then
-		if not LunaUF.db.profile.units[frame.unitGroup].castBar.icon then
+	frame.castBar.bar:SetReverse(LunaUF2.db.profile.units[frame.unitGroup].castBar.reverse)
+	if frame.castBar and LunaUF2.db.profile.units[frame.unitGroup].castBar.enabled and unitname then
+		if not LunaUF2.db.profile.units[frame.unitGroup].castBar.icon then
 			frame.castBar.icon:SetTexture(nil)
 		elseif frame.castBar.casting or frame.castBar.channeling then
 			frame.castBar.icon:SetTexture(BS:GetSpellIcon(frame.castBar.Text:GetText() or "") or GetItemIconTexture(frame.castBar.Text:GetText() or ""))
 		end
 		if frame.castBar.casting then
-			frame.castBar.bar:SetStatusBarColor(LunaUF.db.profile.castColors.cast.r, LunaUF.db.profile.castColors.cast.g, LunaUF.db.profile.castColors.cast.b)
+			frame.castBar.bar:SetStatusBarColor(LunaUF2.db.profile.castColors.cast.r, LunaUF2.db.profile.castColors.cast.g, LunaUF2.db.profile.castColors.cast.b)
 		elseif frame.castBar.channeling then
-			frame.castBar.bar:SetStatusBarColor(LunaUF.db.profile.castColors.channel.r, LunaUF.db.profile.castColors.channel.g, LunaUF.db.profile.castColors.channel.b)
+			frame.castBar.bar:SetStatusBarColor(LunaUF2.db.profile.castColors.channel.r, LunaUF2.db.profile.castColors.channel.g, LunaUF2.db.profile.castColors.channel.b)
 		end
 		if UnitIsUnit(frame.unit,"player") then
 			frame.castBar:SetScript("OnEvent", OnEvent)
 			if (frame.castBar.casting or frame.castBar.channeling) then
-				if not LunaUF.db.profile.units[frame.unitGroup].castBar.vertical then
+				if not LunaUF2.db.profile.units[frame.unitGroup].castBar.vertical then
 					frame.castBar.Text:Show()
 					frame.castBar.Time:Show()
 				end
 				if frame.castBar.hidden then
 					frame.castBar.hidden = false
-					LunaUF.Units:PositionWidgets(frame)
+					LunaUF2.Units:PositionWidgets(frame)
 				end
 			else
 				frame.castBar.Text:Hide()
@@ -876,12 +876,12 @@ function Cast:FullUpdate(frame)
 				frame.castBar.icon:SetTexture(nil)
 				frame.castBar.bar:SetMinMaxValues(0,1)
 				frame.castBar.bar:SetValue(0)
-				if LunaUF.db.profile.units[frame.unitGroup].castBar.hide and not frame.castBar.hidden then
+				if LunaUF2.db.profile.units[frame.unitGroup].castBar.hide and not frame.castBar.hidden then
 					frame.castBar.hidden = true
-					LunaUF.Units:PositionWidgets(frame)
-				elseif not LunaUF.db.profile.units[frame.unitGroup].castBar.hide and frame.castBar.hidden then
+					LunaUF2.Units:PositionWidgets(frame)
+				elseif not LunaUF2.db.profile.units[frame.unitGroup].castBar.hide and frame.castBar.hidden then
 					frame.castBar.hidden = nil
-					LunaUF.Units:PositionWidgets(frame)
+					LunaUF2.Units:PositionWidgets(frame)
 				end
 			end
 		else
@@ -893,19 +893,19 @@ function Cast:FullUpdate(frame)
 				frame.castBar.bar:SetMinMaxValues(0, CasterDB[unitname].ct)
 				frame.castBar.startTime = CasterDB[unitname].start
 				frame.castBar.maxValue = CasterDB[unitname].ct
-				if not LunaUF.db.profile.units[frame.unitGroup].castBar.vertical then
+				if not LunaUF2.db.profile.units[frame.unitGroup].castBar.vertical then
 					frame.castBar.Text:Show()
 					frame.castBar.Time:Show()
 				end
 				frame.castBar.Text:SetText(CasterDB[unitname].sp)
-				if LunaUF.db.profile.units[frame.unitGroup].castBar.icon then
+				if LunaUF2.db.profile.units[frame.unitGroup].castBar.icon then
 					frame.castBar.icon:SetTexture(BS:GetSpellIcon(CasterDB[unitname].sp) or GetItemIconTexture(CasterDB[unitname].sp))
 				end
 				frame.castBar.casting = true
 				frame.castBar:SetScript("OnUpdate", OnUpdateOther)
 				if frame.castBar.hidden then
 					frame.castBar.hidden = false
-					LunaUF.Units:PositionWidgets(frame)
+					LunaUF2.Units:PositionWidgets(frame)
 				end
 			else
 				frame.castBar.casting = false
@@ -916,12 +916,12 @@ function Cast:FullUpdate(frame)
 				frame.castBar.Time:Hide()
 				frame.castBar.icon:SetTexture(nil)
 				frame.castBar:SetScript("OnUpdate", nil)
-				if LunaUF.db.profile.units[frame.unitGroup].castBar.hide and not frame.castBar.hidden then
+				if LunaUF2.db.profile.units[frame.unitGroup].castBar.hide and not frame.castBar.hidden then
 					frame.castBar.hidden = true
-					LunaUF.Units:PositionWidgets(frame)
-				elseif not LunaUF.db.profile.units[frame.unitGroup].castBar.hide and frame.castBar.hidden then
+					LunaUF2.Units:PositionWidgets(frame)
+				elseif not LunaUF2.db.profile.units[frame.unitGroup].castBar.hide and frame.castBar.hidden then
 					frame.castBar.hidden = nil
-					LunaUF.Units:PositionWidgets(frame)
+					LunaUF2.Units:PositionWidgets(frame)
 				end
 			end
 		end
@@ -931,7 +931,7 @@ end
 
 function Cast:SetBarTexture(frame,texture)
 	frame.castBar.bar:SetStatusBarTexture(texture)
-	frame.castBar.bar:SetStretchTexture(LunaUF.db.profile.stretchtex)
+	frame.castBar.bar:SetStretchTexture(LunaUF2.db.profile.stretchtex)
 end
 
 function Cast:MINIMAP_ZONE_CHANGED()

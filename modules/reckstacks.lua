@@ -1,6 +1,6 @@
 local ReckStacks = {}
-local L = LunaUF.L
-LunaUF:RegisterModule(ReckStacks, "reckStacks", L["Reckoning Stacks"])
+local L = LunaUF2.L
+LunaUF2:RegisterModule(ReckStacks, "reckStacks", L["Reckoning Stacks"])
 local _,playerclass = UnitClass("player")
 local currStacks = 0
 local talentRank
@@ -59,17 +59,17 @@ end
 
 function ReckStacks:Update(frame)
 	if currStacks == 0 then
-		if LunaUF.db.profile.units[frame.unitGroup].reckStacks.hide and not frame.reckStacks.hidden then
+		if LunaUF2.db.profile.units[frame.unitGroup].reckStacks.hide and not frame.reckStacks.hidden then
 			frame.reckStacks.hidden = true
-			LunaUF.Units:PositionWidgets(frame)
-		elseif not LunaUF.db.profile.units[frame.unitGroup].reckStacks.hide and frame.reckStacks.hidden then
+			LunaUF2.Units:PositionWidgets(frame)
+		elseif not LunaUF2.db.profile.units[frame.unitGroup].reckStacks.hide and frame.reckStacks.hidden then
 			frame.reckStacks.hidden = nil
-			LunaUF.Units:PositionWidgets(frame)
+			LunaUF2.Units:PositionWidgets(frame)
 		end
 	else
 		if frame.reckStacks.hidden then
 			frame.reckStacks.hidden = false
-			LunaUF.Units:PositionWidgets(frame)
+			LunaUF2.Units:PositionWidgets(frame)
 		end
 	end
 	for id,block in ipairs(frame.reckStacks.blocks) do
@@ -88,7 +88,7 @@ function ReckStacks:FullUpdate(frame)
 		texture:SetHeight(frame.reckStacks:GetHeight())
 		texture:SetWidth(blockWidth)
 		texture:ClearAllPoints()
-		if( LunaUF.db.profile.units[frame.unitGroup].reckStacks.growth == "LEFT" ) then
+		if( LunaUF2.db.profile.units[frame.unitGroup].reckStacks.growth == "LEFT" ) then
 			if( id > 1 ) then
 				texture:SetPoint("TOPRIGHT", frame.reckStacks.blocks[id - 1], "TOPLEFT", -1, 0)
 			else

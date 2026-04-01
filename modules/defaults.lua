@@ -1,16 +1,16 @@
-local L = LunaUF.L
+local L = LunaUF2.L
 
-LunaUF.defaultFont = "Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..L["DEFAULT_FONT"]..".ttf"
+LunaUF2.defaultFont = "Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..L["DEFAULT_FONT"]..".ttf"
 
 StaticPopupDialogs["RESET_LUNA_PROFILE"] = {
 	text = L["Do you really want to reset to default for your current profile?"],
 	button1 = L["OK"],
 	button2 = L["Cancel"],
 	OnAccept = function()
-		LunaUF:ResetDB("profile")
+		LunaUF2:ResetDB("profile")
 		--Need To Reset the options Window here if its open
-		LunaUF:OnProfileEnable()
-		LunaUF:SystemMessage(LunaUF.L["Current profile has been reset."])
+		LunaUF2:OnProfileEnable()
+		LunaUF2:SystemMessage(LunaUF2.L["Current profile has been reset."])
 	end,
 	timeout = 0,
 	whileDead = 1,
@@ -25,10 +25,10 @@ StaticPopupDialogs["DELETE_LUNA_PROFILE"] = {
 		local profile = UIDropDownMenu_GetSelectedValue(LunaOptionsFrame.pages[15].ProfileSelect)
 		UIDropDownMenu_SetSelectedValue(LunaOptionsFrame.pages[15].ProfileSelect, "Default")
 		UIDropDownMenu_SetText("Default", LunaOptionsFrame.pages[15].ProfileSelect)
-		LunaUF:SetProfile("Default")
-		LunaDB.profiles[profile] = nil
+		LunaUF2:SetProfile("Default")
+		LunaDB2.profiles[profile] = nil
 		LunaOptionsFrame.pages[15].delete:Disable()
-		LunaUF:SystemMessage(LunaUF.L["The profile has been deleted and the default profile has been selected."])
+		LunaUF2:SystemMessage(LunaUF2.L["The profile has been deleted and the default profile has been selected."])
 	end,
 	timeout = 0,
 	whileDead = 1,
@@ -40,12 +40,12 @@ StaticPopupDialogs["RESET_LUNA_COLORS"] = {
 	button1 = L["OK"],
 	button2 = L["Cancel"],
 	OnAccept = function()
-		LunaUF.db.profile.classColors	= LunaUF:deepcopy(LunaUF.defaults.profile.classColors)
-		LunaUF.db.profile.healthColors	= LunaUF:deepcopy(LunaUF.defaults.profile.healthColors)
-		LunaUF.db.profile.powerColors	= LunaUF:deepcopy(LunaUF.defaults.profile.powerColors)
-		LunaUF.db.profile.castColors	= LunaUF:deepcopy(LunaUF.defaults.profile.castColors)
-		LunaUF.db.profile.xpColors		= LunaUF:deepcopy(LunaUF.defaults.profile.xpColors)
-		LunaUF:OnProfileEnable()
+		LunaUF2.db.profile.classColors	= LunaUF2:deepcopy(LunaUF2.defaults.profile.classColors)
+		LunaUF2.db.profile.healthColors	= LunaUF2:deepcopy(LunaUF2.defaults.profile.healthColors)
+		LunaUF2.db.profile.powerColors	= LunaUF2:deepcopy(LunaUF2.defaults.profile.powerColors)
+		LunaUF2.db.profile.castColors	= LunaUF2:deepcopy(LunaUF2.defaults.profile.castColors)
+		LunaUF2.db.profile.xpColors		= LunaUF2:deepcopy(LunaUF2.defaults.profile.xpColors)
+		LunaUF2:OnProfileEnable()
 	end,
 	timeout = 0,
 	whileDead = 1,
@@ -53,7 +53,7 @@ StaticPopupDialogs["RESET_LUNA_COLORS"] = {
 };
 
 -- Default Settings ------------------------------------------------------------------------
-LunaUF.defaults = {
+LunaUF2.defaults = {
 	profile = {
 		blizzard = {
 			castbar = false,

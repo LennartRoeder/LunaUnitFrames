@@ -1,5 +1,5 @@
 local Highlight = {}
-LunaUF:RegisterModule(Highlight, "highlight", LunaUF.L["Highlight"])
+LunaUF2:RegisterModule(Highlight, "highlight", LunaUF2.L["Highlight"])
 
 local function OnEvent()
 	local frame = this:GetParent()
@@ -60,7 +60,7 @@ end
 
 function Highlight:FullUpdate(frame)
 	if frame.highlight then
-		local config = LunaUF.db.profile.units[frame.unitGroup].highlight
+		local config = LunaUF2.db.profile.units[frame.unitGroup].highlight
 		local _,_,dtype = UnitDebuff(frame.unit,1,1)
 		if not config.ondebuff or not UnitCanAssist("player", frame.unit) then
 			dtype = nil
@@ -69,7 +69,7 @@ function Highlight:FullUpdate(frame)
 		if (frame.highlight.mouseover and config.onmouse) or targeted or dtype then
 			local r,g,b
 			if dtype then
-				r,g,b = unpack(LunaUF.db.profile.magicColors[dtype])
+				r,g,b = unpack(LunaUF2.db.profile.magicColors[dtype])
 			else
 				r,g,b = 1,1,1
 			end

@@ -1,8 +1,8 @@
-local LunaUF = LunaUF
+local LunaUF2 = LunaUF2
 local Druid = {}
-local DruidManaLib = LunaUF.DruidManaLib
+local DruidManaLib = LunaUF2.DruidManaLib
 local _,playerclass = UnitClass("player")
-LunaUF:RegisterModule(Druid, "druidBar", LunaUF.L["Druid Bar"], true)
+LunaUF2:RegisterModule(Druid, "druidBar", LunaUF2.L["Druid Bar"], true)
 
 local function OnUpdate()
 	local mana,manamax = DruidManaLib:GetMana()
@@ -12,21 +12,21 @@ end
 
 local function OnEvent()
 	if UnitIsUnit("player", arg1) then
-		Druid:FullUpdate(LunaUF.Units.unitFrames.player)
+		Druid:FullUpdate(LunaUF2.Units.unitFrames.player)
 	end
 end
 
 function Druid:OnEnable(frame)
 	if playerclass ~= "DRUID" then return end
 	if( not frame.druidBar ) then
-		frame.druidBar = LunaUF.Units:CreateBar(frame)
+		frame.druidBar = LunaUF2.Units:CreateBar(frame)
 		frame.fontstrings.druidBar = {
 			["left"] = frame.druidBar:CreateFontString(nil, "ARTWORK"),
 			["center"] = frame.druidBar:CreateFontString(nil, "ARTWORK"),
 			["right"] = frame.druidBar:CreateFontString(nil, "ARTWORK"),
 		}
 		for align,fontstring in pairs(frame.fontstrings.druidBar) do
-			fontstring:SetFont(LunaUF.defaultFont, 14)
+			fontstring:SetFont(LunaUF2.defaultFont, 14)
 			fontstring:SetShadowColor(0, 0, 0, 1.0)
 			fontstring:SetShadowOffset(0.80, -0.80)
 			fontstring:SetJustifyH(string.upper(align))
@@ -50,42 +50,42 @@ function Druid:OnDisable(frame)
 end
 
 function Druid:UpdateColor(frame)
-	local color = LunaUF.db.profile.powerColors.MANA
+	local color = LunaUF2.db.profile.powerColors.MANA
 	
-	if( not LunaUF.db.profile.units.player.druidBar.invert ) then
-		frame.druidBar:SetStatusBarColor(color.r, color.g, color.b, LunaUF.db.profile.bars.alpha)
+	if( not LunaUF2.db.profile.units.player.druidBar.invert ) then
+		frame.druidBar:SetStatusBarColor(color.r, color.g, color.b, LunaUF2.db.profile.bars.alpha)
 		if( not frame.druidBar.background.overrideColor ) then
-			frame.druidBar.background:SetVertexColor(color.r, color.g, color.b, LunaUF.db.profile.bars.backgroundAlpha)
+			frame.druidBar.background:SetVertexColor(color.r, color.g, color.b, LunaUF2.db.profile.bars.backgroundAlpha)
 		end
 	else
-		frame.druidBar.background:SetVertexColor(color.r, color.g, color.b, LunaUF.db.profile.bars.alpha)
+		frame.druidBar.background:SetVertexColor(color.r, color.g, color.b, LunaUF2.db.profile.bars.alpha)
 
 		color = frame.druidBar.background.overrideColor
 		if( not color ) then
-			frame.druidBar:SetStatusBarColor(0, 0, 0, 1 - LunaUF.db.profile.bars.backgroundAlpha)
+			frame.druidBar:SetStatusBarColor(0, 0, 0, 1 - LunaUF2.db.profile.bars.backgroundAlpha)
 		else
-			frame.druidBar:SetStatusBarColor(color.r, color.g, color.b, LunaUF.db.profile.bars.backgroundAlpha)
+			frame.druidBar:SetStatusBarColor(color.r, color.g, color.b, LunaUF2.db.profile.bars.backgroundAlpha)
 		end
 	end
 end
 
 function Druid:FullUpdate(frame)
-	local tags = LunaUF.db.profile.units[frame.unitGroup].tags.bartags.druidBar
+	local tags = LunaUF2.db.profile.units[frame.unitGroup].tags.bartags.druidBar
 	if UnitPowerType(frame.unit) == 0 and not frame.druidBar.hidden then
 		frame.druidBar.hidden = true
-		LunaUF.Units:PositionWidgets(frame)
+		LunaUF2.Units:PositionWidgets(frame)
 	elseif UnitPowerType(frame.unit) > 0 and frame.druidBar.hidden then
 		frame.druidBar.hidden = nil
-		LunaUF.Units:PositionWidgets(frame)
+		LunaUF2.Units:PositionWidgets(frame)
 	end
 	Druid:UpdateColor(frame)
-	if LunaUF.db.profile.units[frame.unitGroup].druidBar.vertical then
+	if LunaUF2.db.profile.units[frame.unitGroup].druidBar.vertical then
 		frame.druidBar:SetOrientation("VERTICAL")
 	else
 		frame.druidBar:SetOrientation("HORIZONTAL")
 	end
 	for align,fontstring in pairs(frame.fontstrings.druidBar) do
-		fontstring:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF.db.profile.font..".ttf", tags.size)
+		fontstring:SetFont("Interface\\AddOns\\LunaUnitFrames\\media\\fonts\\"..LunaUF2.db.profile.font..".ttf", tags.size)
 		fontstring:ClearAllPoints()
 		fontstring:SetHeight(frame.druidBar:GetHeight())
 		if align == "left" then
@@ -104,7 +104,7 @@ end
 function Druid:SetBarTexture(frame,texture)
 	if frame.druidBar then
 		frame.druidBar:SetStatusBarTexture(texture)
-		frame.druidBar:SetStretchTexture(LunaUF.db.profile.stretchtex)
+		frame.druidBar:SetStretchTexture(LunaUF2.db.profile.stretchtex)
 		frame.druidBar.background:SetTexture(texture)
 	end
 end

@@ -1,5 +1,5 @@
-local LunaUF = LunaUF
-local L = LunaUF.L
+local LunaUF2 = LunaUF2
+local L = LunaUF2.L
 local Units = {headerFrames = {}, unitFrames = {}, frameList = {}, childframeList = {}}
 local unitFrames, headerFrames, frameList, childframeList = Units.unitFrames, Units.headerFrames, Units.frameList, Units.childframeList
 local UnitWatch = CreateFrame("Frame")
@@ -12,8 +12,8 @@ local numPets = 0
 local currPet
 local PetRosterChanged
 local PetExists
-LunaUF.Units = Units
-LunaUF.Units.UnitWatch = UnitWatch
+LunaUF2.Units = Units
+LunaUF2.Units.UnitWatch = UnitWatch
 
 local has_superwow = SetAutoloot and true or false
 
@@ -22,7 +22,7 @@ local has_superwow = SetAutoloot and true or false
 local orig_RaidFrame_OnEvent = RaidFrame_OnEvent
 function RaidFrame_OnEvent(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)
 	if event == "RAID_ROSTER_UPDATE" or event == "PARTY_MEMBERS_CHANGED" or event == "PARTY_LEADER_CHANGED" then
-		LunaUF:TriggerEvent("RaidFrame_RaidRosterUpdate")
+		LunaUF2:TriggerEvent("RaidFrame_RaidRosterUpdate")
     return
   end
   return orig_RaidFrame_OnEvent(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10)
@@ -32,21 +32,21 @@ local function raid_update()
   RaidFrame_LoadUI()
   RaidFrame_Update()
 end
-LunaUF:RegisterBucketEvent("RaidFrame_RaidRosterUpdate", 0.3, function () raid_update() end)
+LunaUF2:RegisterBucketEvent("RaidFrame_RaidRosterUpdate", 0.3, function () raid_update() end)
 ------------------------------
 
 -- Frame shown, do a full update
 local function FullUpdate(frame)
 	if Units.pauseUpdates and strsub(frame.unit,1,6) == "target" then return end
-	local config = LunaUF.db.profile.units[frame.unitGroup]
-	for key,_ in pairs(LunaUF.modules) do
+	local config = LunaUF2.db.profile.units[frame.unitGroup]
+	for key,_ in pairs(LunaUF2.modules) do
 		if config[key] and config[key].enabled and frame[key] then
-			LunaUF.modules[key]:FullUpdate(frame)
+			LunaUF2.modules[key]:FullUpdate(frame)
 		end
 	end
 end
 
-LunaUF.Units.FullUpdate = FullUpdate
+LunaUF2.Units.FullUpdate = FullUpdate
 
 --UnitWatch
 local function UnitWatchOnUpdate()
@@ -54,19 +54,19 @@ local function UnitWatchOnUpdate()
 	if this.time > 0.2 and not Units.pauseUpdates then
 		this.time = 0
 		for _,frame in pairs(childframeList) do
-			if frame.parentunit and UnitExists(frame.parentunit) and frame.UnitExists(frame.unit) and LunaUF.db.profile.units[frame.unitGroup].enabled then
+			if frame.parentunit and UnitExists(frame.parentunit) and frame.UnitExists(frame.unit) and LunaUF2.db.profile.units[frame.unitGroup].enabled then
 				if not frame:IsShown() then
 					frame:Show()
 				else
 					FullUpdate(frame)
 				end
-			elseif frame:IsShown() and (LunaUF.db.profile.locked or not LunaUF.db.profile.units[frame.unitGroup].enabled) then
+			elseif frame:IsShown() and (LunaUF2.db.profile.locked or not LunaUF2.db.profile.units[frame.unitGroup].enabled) then
 				frame:Hide()
 			end
 		end
 		numPets = 0
 		PetRosterChanged = nil
-		if LunaUF.db.profile.units.raid.petgrp then
+		if LunaUF2.db.profile.units.raid.petgrp then
 			if UnitInRaid("player") then
 				for i=1, 40 do
 					currPet = "raidpet"..i
@@ -149,22 +149,22 @@ local function UnitWatchOnUpdate()
 end
 
 local function UnitWatchOnEvent()
-	if event == "PLAYER_TARGET_CHANGED" and LunaUF.db.profile.units.target.enabled then
+	if event == "PLAYER_TARGET_CHANGED" and LunaUF2.db.profile.units.target.enabled then
 		local frame = unitFrames.target
-		if UnitExists("target") and LunaUF.db.profile.units.target.enabled then
+		if UnitExists("target") and LunaUF2.db.profile.units.target.enabled then
 			if not frame:IsShown() then
 				frame:Show()
 			else
 				FullUpdate(frame)
 			end
-		elseif frame:IsShown() and LunaUF.db.profile.locked then
+		elseif frame:IsShown() and LunaUF2.db.profile.locked then
 			frame:Hide()
 		end
 	elseif event == "UNIT_PET" and arg1 == "player" then
 		if unitFrames["pet"] then
 			if UnitExists(unitFrames["pet"].unit) and not unitFrames["pet"]:IsShown() then
 				unitFrames["pet"]:Show()
-			elseif not UnitExists(unitFrames["pet"].unit) and unitFrames["pet"]:IsShown() and LunaUF.db.profile.locked then
+			elseif not UnitExists(unitFrames["pet"].unit) and unitFrames["pet"]:IsShown() and LunaUF2.db.profile.locked then
 				unitFrames["pet"]:Hide()
 			end
 			if unitFrames["pet"]:IsShown() then
@@ -172,21 +172,21 @@ local function UnitWatchOnEvent()
 			end
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" then
-		for _, type in pairs(LunaUF.unitList) do
-			LunaUF.Units:InitializeFrame(type)
+		for _, type in pairs(LunaUF2.unitList) do
+			LunaUF2.Units:InitializeFrame(type)
 		end
-		if (LunaUF.db.profile.version or 0 > LunaUF.Version) then
-			SendAddonMessage("LUF", LunaUF.db.profile.version, "GUILD")
-			SendAddonMessage("LUF", LunaUF.db.profile.version, "RAID")
+		if (LunaUF2.db.profile.version or 0 > LunaUF2.Version) then
+			SendAddonMessage("LUF", LunaUF2.db.profile.version, "GUILD")
+			SendAddonMessage("LUF", LunaUF2.db.profile.version, "RAID")
 		else
-			SendAddonMessage("LUF", LunaUF.Version, "GUILD")
-			SendAddonMessage("LUF", LunaUF.Version, "RAID")
+			SendAddonMessage("LUF", LunaUF2.Version, "GUILD")
+			SendAddonMessage("LUF", LunaUF2.Version, "RAID")
 		end
 	elseif event == "CHAT_MSG_ADDON" and arg1 == "LUF" then
-		if tonumber(arg2) > (LunaUF.db.profile.version or LunaUF.Version) then
-			LunaUF.db.profile.version = tonumber(arg2)
+		if tonumber(arg2) > (LunaUF2.db.profile.version or LunaUF2.Version) then
+			LunaUF2.db.profile.version = tonumber(arg2)
 			LunaOptionsFrame.version:SetTextColor(1,0,0)
-			LunaOptionsFrame.version:SetText("V."..LunaUF.Version.." Beta (Outdated)")
+			LunaOptionsFrame.version:SetText("V."..LunaUF2.Version.." Beta (Outdated)")
 		end
 	end
 end
@@ -205,7 +205,7 @@ local function OnEnter()
 			SetMouseoverUnit(this.unit)
 		end
 		UnitFrame_OnEnter()
-		if LunaUF.db.profile.tooltips and not (LunaUF.db.profile.tooltipCombat and UnitAffectingCombat("player")) then
+		if LunaUF2.db.profile.tooltips and not (LunaUF2.db.profile.tooltipCombat and UnitAffectingCombat("player")) then
 			GameTooltip_SetDefaultAnchor(GameTooltip, this)
 			GameTooltip:SetUnit(this.unit)
 			local r, g, b = GameTooltip_UnitColor(this.unit)
@@ -276,13 +276,13 @@ end
 
 local function OnClick()
 	if arg1 == "UNKNOWN" then
-		arg1 = LunaUF.clickedButton
+		arg1 = LunaUF2.clickedButton
 	end
 	if Luna_Custom_ClickFunction and Luna_Custom_ClickFunction(arg1, this.unit) then
 		return;
 	else
 		local button = (IsControlKeyDown() and "Ctrl-" or "") .. (IsShiftKeyDown() and "Shift-" or "") .. (IsAltKeyDown() and "Alt-" or "") .. L[arg1]
-		local action = LunaUF.db.profile.clickcasting.bindings[button]
+		local action = LunaUF2.db.profile.clickcasting.bindings[button]
 		if not action then
 			return
 		elseif action == L["menu"] then
@@ -301,7 +301,7 @@ local function OnClick()
 				TargetUnit(this.unit)
 			end
 		else
-			LunaUF:Mouseover(action)
+			LunaUF2:Mouseover(action)
 		end
 	end
 end
@@ -314,8 +314,8 @@ local function StopMovingOrSizing()
 	local scale = this:GetScale() * UIParent:GetScale()
 	local _, _, _, x, y = this:GetPoint()
 	this:StopMovingOrSizing()
-	LunaUF.db.profile.units[this.unitGroup].position.x = x * scale
-	LunaUF.db.profile.units[this.unitGroup].position.y = y * scale
+	LunaUF2.db.profile.units[this.unitGroup].position.x = x * scale
+	LunaUF2.db.profile.units[this.unitGroup].position.y = y * scale
 	for i=2,12 do
 		if LunaOptionsFrame.pages[i] and LunaOptionsFrame.pages[i].id == this.unitGroup then
 			LunaOptionsFrame.pages[i].xInput:SetText(x * scale)
@@ -325,7 +325,7 @@ local function StopMovingOrSizing()
 end
 
 local function HeaderStartMoving()
-	if LunaUF.db.profile.units.raid.interlock and this.unitGroup == "raid" then
+	if LunaUF2.db.profile.units.raid.interlock and this.unitGroup == "raid" then
 		headerFrames.raid1:StartMoving()
 	else
 		this:GetParent():StartMoving()
@@ -338,8 +338,8 @@ local function GroupHeaderStopMovingOrSizing()
 	local x,y
 	x = this:GetParent():GetLeft()
 	y = (UIParent:GetHeight()/UIParent:GetScale()-this:GetParent():GetTop()) * -1
-	LunaUF.db.profile.units[this:GetParent().unitGroup].position.x = x
-	LunaUF.db.profile.units[this:GetParent().unitGroup].position.y = y
+	LunaUF2.db.profile.units[this:GetParent().unitGroup].position.x = x
+	LunaUF2.db.profile.units[this:GetParent().unitGroup].position.y = y
 	for i=7,9 do
 		if LunaOptionsFrame.pages[i].id == unit then
 			LunaOptionsFrame.pages[i].xInput:SetText(x)
@@ -350,13 +350,13 @@ end
 
 local function RaidHeaderStopMovingOrSizing()
 	local x,y
-	if LunaUF.db.profile.units.raid.interlock then
+	if LunaUF2.db.profile.units.raid.interlock then
 		headerFrames.raid1:StopMovingOrSizing()
 		for i=1,9 do
 			x = headerFrames["raid"..i]:GetLeft()
 			y = (UIParent:GetHeight()/UIParent:GetScale()-headerFrames["raid"..i]:GetTop()) * -1
-			LunaUF.db.profile.units.raid[i].position.x = x
-			LunaUF.db.profile.units.raid[i].position.y = y
+			LunaUF2.db.profile.units.raid[i].position.x = x
+			LunaUF2.db.profile.units.raid[i].position.y = y
 			if UIDropDownMenu_GetSelectedID(LunaOptionsFrame.pages[11].GrpSelect) == i then
 				LunaOptionsFrame.pages[11].xInput:SetText(x)
 				LunaOptionsFrame.pages[11].yInput:SetText(y)
@@ -366,8 +366,8 @@ local function RaidHeaderStopMovingOrSizing()
 		this:GetParent():StopMovingOrSizing()
 		x = this:GetParent():GetLeft()
 		y = (UIParent:GetHeight()/UIParent:GetScale()-this:GetParent():GetTop()) * -1
-		LunaUF.db.profile.units.raid[this:GetParent().id].position.x = x
-		LunaUF.db.profile.units.raid[this:GetParent().id].position.y = y
+		LunaUF2.db.profile.units.raid[this:GetParent().id].position.x = x
+		LunaUF2.db.profile.units.raid[this:GetParent().id].position.y = y
 		if UIDropDownMenu_GetSelectedID(LunaOptionsFrame.pages[11].GrpSelect) == this:GetParent().id then
 			LunaOptionsFrame.pages[11].xInput:SetText(x)
 			LunaOptionsFrame.pages[11].yInput:SetText(y)
@@ -384,11 +384,11 @@ local function Raid_Update_Event()
 		header.Update(header.unitGroup or header)
 	end
 end
-LunaUF:RegisterBucketEvent("LunaUF_RaidRosterUpdate", 0.3, function () Raid_Update_Event() end)
+LunaUF2:RegisterBucketEvent("LunaUF2_RaidRosterUpdate", 0.3, function () Raid_Update_Event() end)
 
 local function SetupGroupHeader(groupType)
 	local unitGroup = groupType or this.unitGroup
-	local config = LunaUF.db.profile.units.party
+	local config = LunaUF2.db.profile.units.party
 	local header = headerFrames[unitGroup]
 	if UnitInRaid("player") and not config.inraid then
 		header:Hide()
@@ -396,8 +396,8 @@ local function SetupGroupHeader(groupType)
 	else
 		header:Show()
 	end
-	local point = LunaUF.constants.AnchorPoint[config.growth]
-	local framesneeded = config.enabled and ((LunaUF.db.profile.locked and GetNumPartyMembers() or 4) + (config.player and 1 or 0)) or 0
+	local point = LunaUF2.constants.AnchorPoint[config.growth]
+	local framesneeded = config.enabled and ((LunaUF2.db.profile.locked and GetNumPartyMembers() or 4) + (config.player and 1 or 0)) or 0
 	if framesneeded == 1 and config.player then
 		framesneeded = 0
 	end
@@ -452,14 +452,14 @@ local function SetupGroupHeader(groupType)
 
 	local xoffset
 	if config.growth == "RIGHT" or config.growth == "LEFT" then
-		xoffset = ((config.growth == "RIGHT" and 1 or -1) * (LunaUF.db.profile.units.party.size.x + LunaUF.db.profile.units.party.padding))
+		xoffset = ((config.growth == "RIGHT" and 1 or -1) * (LunaUF2.db.profile.units.party.size.x + LunaUF2.db.profile.units.party.padding))
 	else
 		xoffset = 0
 	end
 
 	local yoffset
 	if config.growth == "UP" or config.growth == "DOWN" then
-		yoffset = ((config.growth == "UP" and 1 or -1) * (LunaUF.db.profile.units.party.size.y + LunaUF.db.profile.units.party.padding))
+		yoffset = ((config.growth == "UP" and 1 or -1) * (LunaUF2.db.profile.units.party.size.y + LunaUF2.db.profile.units.party.padding))
 	else
 		yoffset = 0
 	end
@@ -474,10 +474,10 @@ local function SetupGroupHeader(groupType)
 			end
 			frame:ClearAllPoints()
 			frame:SetPoint(point, anchor, point, i>1 and xoffset, i>1 and yoffset)
-			frame:SetWidth(LunaUF.db.profile.units[unitGroup].size.x)
-			frame:SetHeight(LunaUF.db.profile.units[unitGroup].size.y)
-			frame:SetScale(LunaUF.db.profile.units[unitGroup].scale)
-			if not LunaUF.db.profile.locked then
+			frame:SetWidth(LunaUF2.db.profile.units[unitGroup].size.x)
+			frame:SetHeight(LunaUF2.db.profile.units[unitGroup].size.y)
+			frame:SetScale(LunaUF2.db.profile.units[unitGroup].scale)
+			if not LunaUF2.db.profile.locked then
 				frame.unit = "player"
 				frame.parentunit = "player"
 				frame:SetScript("OnDragStart", HeaderStartMoving)
@@ -505,21 +505,21 @@ end
 
 local function SetupRaidHeader(passedHeader)
 	local header = passedHeader or header
-	local config = LunaUF.db.profile.units.raid
-	local point = LunaUF.constants.AnchorPoint[config.growth]
+	local config = LunaUF2.db.profile.units.raid
+	local point = LunaUF2.constants.AnchorPoint[config.growth]
 	local framesneeded = 0
 	if header.id == 9 then
 		if config.petgrp and (config.showalways or (config.showparty and GetNumPartyMembers() > 0) or UnitInRaid("player")) then
-			framesneeded = not LunaUF.db.profile.locked and 5 or numPets
+			framesneeded = not LunaUF2.db.profile.locked and 5 or numPets
 		else
 			framesneeded = 0
 		end
 	elseif config.mode == "GROUP" then
-		framesneeded = not LunaUF.db.profile.locked and 5 or RAID_SUBGROUP_LISTS and RAID_SUBGROUP_LISTS[header.id] and getn(RAID_SUBGROUP_LISTS[header.id]) or 0
+		framesneeded = not LunaUF2.db.profile.locked and 5 or RAID_SUBGROUP_LISTS and RAID_SUBGROUP_LISTS[header.id] and getn(RAID_SUBGROUP_LISTS[header.id]) or 0
 	else
-		framesneeded = not LunaUF.db.profile.locked and 5 or RAID_SUBGROUP_LISTS and RAID_SUBGROUP_LISTS[LunaUF.constants.RaidClassMapping[header.id]] and getn(RAID_SUBGROUP_LISTS[LunaUF.constants.RaidClassMapping[header.id]]) or 0
+		framesneeded = not LunaUF2.db.profile.locked and 5 or RAID_SUBGROUP_LISTS and RAID_SUBGROUP_LISTS[LunaUF2.constants.RaidClassMapping[header.id]] and getn(RAID_SUBGROUP_LISTS[LunaUF2.constants.RaidClassMapping[header.id]]) or 0
 	end
-	if not UnitInRaid("player") and header.id == 1 and LunaUF.db.profile.locked then
+	if not UnitInRaid("player") and header.id == 1 and LunaUF2.db.profile.locked then
 		if config.showalways or (config.showparty and GetNumPartyMembers() > 0) then
 			framesneeded = GetNumPartyMembers() + 1
 		end
@@ -554,17 +554,17 @@ local function SetupRaidHeader(passedHeader)
 		if framesneeded > getn(RaidRoster) then
 			framesneeded = getn(RaidRoster)
 		end
-	elseif LunaUF.db.profile.locked and framesneeded > 0 and UnitInRaid("player") then
+	elseif LunaUF2.db.profile.locked and framesneeded > 0 and UnitInRaid("player") then
 		if config.mode == "GROUP" and RAID_SUBGROUP_LISTS[header.id] then
 			for _,v in pairs(RAID_SUBGROUP_LISTS[header.id]) do
 				table.insert(RaidRoster,{UnitName("raid"..v),"raid"..v})
 			end
-		elseif RAID_SUBGROUP_LISTS[LunaUF.constants.RaidClassMapping[header.id]] and framesneeded > 0 then
-			for _,v in pairs(RAID_SUBGROUP_LISTS[LunaUF.constants.RaidClassMapping[header.id]]) do
+		elseif RAID_SUBGROUP_LISTS[LunaUF2.constants.RaidClassMapping[header.id]] and framesneeded > 0 then
+			for _,v in pairs(RAID_SUBGROUP_LISTS[LunaUF2.constants.RaidClassMapping[header.id]]) do
 				table.insert(RaidRoster,{UnitName("raid"..v),"raid"..v})
 			end
 		end
-	elseif LunaUF.db.profile.locked and framesneeded > 0 then
+	elseif LunaUF2.db.profile.locked and framesneeded > 0 then
 		table.insert(RaidRoster,{UnitName("player"),"player"})
 		for i=1, 4 do
 			local unit = "party"..i
@@ -593,22 +593,22 @@ local function SetupRaidHeader(passedHeader)
 	end
 
 	if framesneeded > 0 then
-		if LunaUF.db.profile.units.raid.sortby == "NAME" then
-			if LunaUF.db.profile.units.raid.order == "ASC" then
+		if LunaUF2.db.profile.units.raid.sortby == "NAME" then
+			if LunaUF2.db.profile.units.raid.order == "ASC" then
 				table.sort(RaidRoster, function (a,b) return a[1]<b[1] end)
 			else
 				table.sort(RaidRoster, function (a,b) return a[1]>b[1] end)
 			end
 		else
-			if LunaUF.db.profile.units.raid.order ~= "ASC" then
+			if LunaUF2.db.profile.units.raid.order ~= "ASC" then
 				table.sort(RaidRoster, function (a,b) return a[2]>b[2] end)
 			else
 				table.sort(RaidRoster, function (a,b) return a[2]<b[2] end)
 			end
 		end
 		header.title:SetPoint("CENTER", header, "CENTER", 20*xoffset, 20*yoffset)
-		local text = config.mode == "CLASS" and LunaUF.constants.RaidClassMapping[header.id] or ("GRP "..header.id)
-		header.title:SetText(LunaUF.db.profile.units.raid.titles and text or "")
+		local text = config.mode == "CLASS" and LunaUF2.constants.RaidClassMapping[header.id] or ("GRP "..header.id)
+		header.title:SetText(LunaUF2.db.profile.units.raid.titles and text or "")
 	else
 		header.title:SetText("")
 	end
@@ -626,7 +626,7 @@ local function SetupRaidHeader(passedHeader)
 			frame:SetWidth(config.size.x)
 			frame:SetHeight(config.size.y)
 			frame:SetScale(config.scale)
-			if not LunaUF.db.profile.locked then
+			if not LunaUF2.db.profile.locked then
 				frame.unit = "player"
 				frame:SetScript("OnDragStart", HeaderStartMoving)
 			else
@@ -658,11 +658,11 @@ function Units:CreateUnit(a1, a2, a3, a4)
 
 	frame:SetFrameStrata("BACKGROUND")
 	frame:SetClampedToScreen(1)
-	local click_action = LunaUF.db.profile.clickcasting.mouseDownClicks and "Down" or "Up"
+	local click_action = LunaUF2.db.profile.clickcasting.mouseDownClicks and "Down" or "Up"
 	frame:RegisterForClicks('LeftButton' .. click_action, 'RightButton' .. click_action, 'MiddleButton' .. click_action, 'Button4' .. click_action, 'Button5' .. click_action)
 	frame:SetScript("OnClick", OnClick)
-	frame:SetBackdrop(LunaUF.constants.backdrop)
-	frame:SetBackdropColor(LunaUF.db.profile.bgcolor.r,LunaUF.db.profile.bgcolor.g,LunaUF.db.profile.bgcolor.b,LunaUF.db.profile.bgalpha)
+	frame:SetBackdrop(LunaUF2.constants.backdrop)
+	frame:SetBackdropColor(LunaUF2.db.profile.bgcolor.r,LunaUF2.db.profile.bgcolor.g,LunaUF2.db.profile.bgcolor.b,LunaUF2.db.profile.bgalpha)
 
 	table.insert(frameList,frame)
 	return frame
@@ -689,17 +689,17 @@ function Units:LoadUnit(unit)
 	-- And lets get this going
 
 	frame:ClearAllPoints()
-	frame:SetWidth(LunaUF.db.profile.units[frame.unitGroup].size.x)
-	frame:SetHeight(LunaUF.db.profile.units[frame.unitGroup].size.y)
-	frame:SetScale(LunaUF.db.profile.units[frame.unitGroup].scale)
+	frame:SetWidth(LunaUF2.db.profile.units[frame.unitGroup].size.x)
+	frame:SetHeight(LunaUF2.db.profile.units[frame.unitGroup].size.y)
+	frame:SetScale(LunaUF2.db.profile.units[frame.unitGroup].scale)
 	local scale = frame:GetScale() * UIParent:GetScale()
-	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", LunaUF.db.profile.units[frame.unitGroup].position.x / scale, LunaUF.db.profile.units[frame.unitGroup].position.y / scale)
+	frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", LunaUF2.db.profile.units[frame.unitGroup].position.x / scale, LunaUF2.db.profile.units[frame.unitGroup].position.y / scale)
 
-	if not LunaUF.db.profile.units[unit].enabled then
+	if not LunaUF2.db.profile.units[unit].enabled then
 		frame:Hide()
 		frame:UnregisterAllEvents()
 		return
-	elseif not LunaUF.db.profile.locked then
+	elseif not LunaUF2.db.profile.locked then
 		frame:Show()
 		frame:UnregisterAllEvents()
 		frame:SetScript("OnDragStart", StartMoving)
@@ -741,20 +741,20 @@ function Units:LoadGroupHeader(unit)
 		header.frames = {}
 		header.Update = SetupGroupHeader
 		header.unitGroup = unit
-		header:SetScript("OnEvent", function () LunaUF:TriggerEvent("LunaUF_RaidRosterUpdate") end)
+		header:SetScript("OnEvent", function () LunaUF2:TriggerEvent("LunaUF2_RaidRosterUpdate") end)
 		header:RegisterEvent("PARTY_MEMBERS_CHANGED")
 		header:RegisterEvent("RAID_ROSTER_UPDATE")
 	else
 		header = headerFrames[unit]
 	end
 	header:ClearAllPoints()
-	header:SetPoint("TOPLEFT", UIParent, "TOPLEFT", LunaUF.db.profile.units[unit].position.x, LunaUF.db.profile.units[unit].position.y)
+	header:SetPoint("TOPLEFT", UIParent, "TOPLEFT", LunaUF2.db.profile.units[unit].position.x, LunaUF2.db.profile.units[unit].position.y)
 	header:SetWidth(1)
 	header:SetHeight(1)
 
-	if not LunaUF.db.profile.units[unit].enabled then
+	if not LunaUF2.db.profile.units[unit].enabled then
 		header:Hide()
-	elseif not LunaUF.db.profile.locked then
+	elseif not LunaUF2.db.profile.locked then
 		header:Show()
 		header:SetMovable(1)
 	else
@@ -769,7 +769,7 @@ end
 
 function Units:LoadRaidGroupHeader()
 	local header
-	local config = LunaUF.db.profile.units.raid
+	local config = LunaUF2.db.profile.units.raid
 	for i=1, 9 do
 		if not headerFrames["raid"..i] then
 			header = CreateFrame("Frame", "LUFHeaderraid"..i, UIParent)
@@ -782,8 +782,8 @@ function Units:LoadRaidGroupHeader()
 			header.title = header:CreateFontString(nil, "ARTWORK")
 			header.title:SetShadowColor(0, 0, 0, 1.0)
 			header.title:SetShadowOffset(0.80, -0.80)
-			header.title:SetFont(LunaUF.defaultFont, 14)
-			header:SetScript("OnEvent", function () LunaUF:TriggerEvent("LunaUF_RaidRosterUpdate") end)
+			header.title:SetFont(LunaUF2.defaultFont, 14)
+			header:SetScript("OnEvent", function () LunaUF2:TriggerEvent("LunaUF2_RaidRosterUpdate") end)
 			if header.id == 1 or header.id == 9 then
 				header:RegisterEvent("PARTY_MEMBERS_CHANGED")
 			end
@@ -811,7 +811,7 @@ function Units:LoadRaidGroupHeader()
 			header:SetPoint("TOPLEFT", UIParent, "TOPLEFT", config[header.id].position.x, config[header.id].position.y)
 		end
 
-		if not LunaUF.db.profile.locked then
+		if not LunaUF2.db.profile.locked then
 			header:SetMovable(1)
 		else
 			header:SetMovable(0)
@@ -825,7 +825,7 @@ function Units:LoadRaidGroupHeader()
 end
 
 function Units:PositionWidgets(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup]
+	local config = LunaUF2.db.profile.units[frame.unitGroup]
 	if not config.enabled then return end
 	local vertical = config.barorder.vertical
 	local horizontal = config.barorder.horizontal
@@ -918,12 +918,12 @@ function Units:PositionWidgets(frame)
 end
 
 function Units:SetupFrameModules(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup]
-	for key,module in pairs(LunaUF.modules) do
+	local config = LunaUF2.db.profile.units[frame.unitGroup]
+	for key,module in pairs(LunaUF2.modules) do
 		if config.enabled and config[key] and config[key].enabled then
 			module:OnEnable(frame)
-			if LunaUF.modules[key].SetBarTexture then
-				LunaUF.modules[key]:SetBarTexture(frame,"Interface\\AddOns\\LunaUnitFrames\\media\\textures\\bar\\"..LunaUF.db.profile.texture)
+			if LunaUF2.modules[key].SetBarTexture then
+				LunaUF2.modules[key]:SetBarTexture(frame,"Interface\\AddOns\\LunaUnitFrames\\media\\textures\\bar\\"..LunaUF2.db.profile.texture)
 			end
 		else
 			module:OnDisable(frame)
@@ -934,7 +934,7 @@ end
 
 -- Small helper function for creating bars with
 function Units:CreateBar(parent)
-	local bar = LunaUF:CreateBar(nil, parent)
+	local bar = LunaUF2:CreateBar(nil, parent)
 	bar:SetFrameLevel(parent.topFrameLevel or 5)
 	bar.parent = parent
 
@@ -946,7 +946,7 @@ end
 
 -- Initialize units
 function Units:InitializeFrame(type)
---	if not LunaUF.db.profile.units[type].enabled then return end
+--	if not LunaUF2.db.profile.units[type].enabled then return end
 	if( type == "raid" ) then
 		self:LoadRaidGroupHeader()
 	elseif( type == "party" or type == "partytarget" or type == "partypet" ) then

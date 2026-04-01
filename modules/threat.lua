@@ -1,8 +1,8 @@
-local LunaUF = LunaUF
+local LunaUF2 = LunaUF2
 -- local Threat = CreateFrame("Frame")
 local Threat = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0")
-local L = LunaUF.L
-LunaUF:RegisterModule(Threat, "threat", L["Threat"])
+local L = LunaUF2.L
+LunaUF2:RegisterModule(Threat, "threat", L["Threat"])
 
 local has_superwow = SetAutoloot and true or false
 

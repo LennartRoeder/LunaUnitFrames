@@ -1,5 +1,5 @@
 local Portrait = {}
-LunaUF:RegisterModule(Portrait, "portrait", LunaUF.L["Portrait"])
+LunaUF2:RegisterModule(Portrait, "portrait", LunaUF2.L["Portrait"])
 
 local validunits = {
 	["party1"] = true,
@@ -35,7 +35,7 @@ local function resetGUID()
 end
 
 function Portrait:OnEnable(frame)
-	local config = LunaUF.db.profile.units[frame.unitGroup]
+	local config = LunaUF2.db.profile.units[frame.unitGroup]
 	if( config.portrait.type == "3D" ) then
 		if( not frame.portraitModel ) then
 			frame.portraitModel = CreateFrame("PlayerModel", nil, frame)
@@ -77,7 +77,7 @@ end
 
 function Portrait:FullUpdate(frame)
 	-- Portrait models can't be updated unless the Name changed or else you have the animation jumping around
-	if( LunaUF.db.profile.units[frame.unitGroup].portrait.type == "3D" ) then
+	if( LunaUF2.db.profile.units[frame.unitGroup].portrait.type == "3D" ) then
 		local unitname = UnitName(frame.unit)
 		local isPlayer = UnitIsPlayer(frame.unit)
 		if( frame.portrait.unitname ~= unitname or frame.portrait.isPlayer ~= isPlayer ) then
@@ -92,14 +92,14 @@ function Portrait:FullUpdate(frame)
 end
 
 function Portrait:Update(frame)
-	local type = LunaUF.db.profile.units[frame.unitGroup].portrait.type
+	local type = LunaUF2.db.profile.units[frame.unitGroup].portrait.type
 	local aspect = frame.portrait:GetHeight()/frame.portrait:GetWidth()
 	-- Use class thingy
 	if( type == "class" and UnitIsPlayer(frame.unit) ) then
 		local _,classToken = UnitClass(frame.unit)
 		if( classToken ) then
 			frame.portrait.texture:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
-			frame.portrait.texture:SetTexCoord(unpack(LunaUF.constants.CLASS_ICON_TCOORDS[classToken]))
+			frame.portrait.texture:SetTexCoord(unpack(LunaUF2.constants.CLASS_ICON_TCOORDS[classToken]))
 		else
 			frame.portrait.texture:SetTexture("")
 		end

@@ -1,5 +1,5 @@
 local Fader = {}
-LunaUF:RegisterModule(Fader, "fader", LunaUF.L["Combat fader"])
+LunaUF2:RegisterModule(Fader, "fader", LunaUF2.L["Combat fader"])
 
 local events = {
 	["UNIT_HEALTH"] = true,
@@ -119,22 +119,22 @@ end
 function Fader:Update(frame, event)
 	-- In combat, fade back in
 	if( UnitAffectingCombat("player") or event == "PLAYER_REGEN_DISABLED" ) then
-		startFading(frame, "in", LunaUF.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF.db.profile.units[frame.unitGroup].fader.speedyFade)
+		startFading(frame, "in", LunaUF2.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF2.db.profile.units[frame.unitGroup].fader.speedyFade)
 	-- Player is casting, fade in
 	elseif( UnitIsUnit(frame.unit,"player") and frame.castBar and (frame.castBar.casting or frame.castBar.channeling) ) then
-		startFading(frame, "in", LunaUF.db.profile.units[frame.unitGroup].fader.combatAlpha, true)
+		startFading(frame, "in", LunaUF2.db.profile.units[frame.unitGroup].fader.combatAlpha, true)
 	-- Either mana or energy is not at 100%, fade in
 	elseif( ( UnitPowerType(frame.unit) == 0 or UnitPowerType(frame.unit) == 3 ) and UnitMana(frame.unit) ~= UnitManaMax(frame.unit) ) then
-		startFading(frame, "in", LunaUF.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF.db.profile.units[frame.unitGroup].fader.speedyFade)
+		startFading(frame, "in", LunaUF2.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF2.db.profile.units[frame.unitGroup].fader.speedyFade)
 	-- Health is not at max, fade in
 	elseif( UnitHealth(frame.unit) ~= UnitHealthMax(frame.unit) ) then
-		startFading(frame, "in", LunaUF.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF.db.profile.units[frame.unitGroup].fader.speedyFade)
+		startFading(frame, "in", LunaUF2.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF2.db.profile.units[frame.unitGroup].fader.speedyFade)
 	-- Targetting somebody, fade in
 	elseif( UnitIsUnit(frame.unit,"player") and UnitExists("target") ) then
-		startFading(frame, "in", LunaUF.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF.db.profile.units[frame.unitGroup].fader.speedyFade)
+		startFading(frame, "in", LunaUF2.db.profile.units[frame.unitGroup].fader.combatAlpha, LunaUF2.db.profile.units[frame.unitGroup].fader.speedyFade)
 	-- Nothing else? Fade out!
 	else
-		startFading(frame, "out", LunaUF.db.profile.units[frame.unitGroup].fader.inactiveAlpha, LunaUF.db.profile.units[frame.unitGroup].fader.speedyFade)
+		startFading(frame, "out", LunaUF2.db.profile.units[frame.unitGroup].fader.inactiveAlpha, LunaUF2.db.profile.units[frame.unitGroup].fader.speedyFade)
 	end
 end
 

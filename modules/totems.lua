@@ -1,11 +1,11 @@
 local Totems = {}
-local L = LunaUF.L
-local BS = LunaUF.BS
+local L = LunaUF2.L
+local BS = LunaUF2.BS
 local _,playerclass = UnitClass("player")
-local tooltip = LunaUF.ScanTip
+local tooltip = LunaUF2.ScanTip
 local SpellCast = {}
 local isCasting
-LunaUF:RegisterModule(Totems, "totemBar", L["Totem Bar"], true)
+LunaUF2:RegisterModule(Totems, "totemBar", L["Totem Bar"], true)
 
 local has_superwow = SetAutoloot and true or false
 local range_talent = false
@@ -436,7 +436,7 @@ if not has_superwow then
 		local gcd = gcdCheck()
 		tooltip:ClearLines()
 		tooltip:SetAction(a1)
-		local spellName = LunaScanTipTextLeft1:GetText()
+		local spellName = LunaScanTip2TextLeft1:GetText()
 		-- Call the original function
 		oldUseAction(a1, a2, a3)
 		if gcd then return end
@@ -444,7 +444,7 @@ if not has_superwow then
 		if ( GetActionText(a1) or not spellName ) then
 			return
 		end
-		local rank = LunaScanTipTextRight1:GetText()
+		local rank = LunaScanTip2TextRight1:GetText()
 		if rank then
 			_,_,rank = string.find(rank,"(%d+)")
 		else
@@ -509,21 +509,21 @@ function Totems:FullUpdate(frame)
 			break
 		end
 	end
-	if LunaUF.db.profile.units[frame.unitGroup].totemBar.hide then
+	if LunaUF2.db.profile.units[frame.unitGroup].totemBar.hide then
 		if active then
 			if frame.totemBar.hidden then
 				frame.totemBar.hidden = nil
-				LunaUF.Units:PositionWidgets(frame)
+				LunaUF2.Units:PositionWidgets(frame)
 			end
 		else
 			if not frame.totemBar.hidden then
 				frame.totemBar.hidden = true
-				LunaUF.Units:PositionWidgets(frame)
+				LunaUF2.Units:PositionWidgets(frame)
 			end
 		end
 	elseif frame.totemBar.hidden then
 		frame.totemBar.hidden = nil
-		LunaUF.Units:PositionWidgets(frame)
+		LunaUF2.Units:PositionWidgets(frame)
 	end
 end
 
